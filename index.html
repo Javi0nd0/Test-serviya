@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiYa — Servicios de confianza</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1E3A8A;--blue-mid:#2563EB;--blue-light:#EFF6FF;--blue-xlight:#F8FAFF;
+  --green:#059669;--green-light:#ECFDF5;--green-mid:#10B981;
+  --indigo:#4338CA;--indigo-light:#EEF2FF;
+  --amber:#D97706;--amber-light:#FFFBEB;
+  --red:#DC2626;--red-light:#FEF2F2;
+  --slate:#0F172A;--slate2:#1E293B;--slate3:#334155;
+  --gray:#64748B;--gray2:#94A3B8;--gray3:#CBD5E1;--gray4:#E2E8F0;--gray5:#F1F5F9;--gray6:#F8FAFC;
+  --white:#FFFFFF;
+  --r:12px;--rl:18px;--rxl:24px;
+  --s1:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --s2:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --s3:0 20px 60px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.07);
+  --sb:0 8px 32px rgba(37,99,235,.28);
+  --sg:0 8px 32px rgba(5,150,105,.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--slate);line-height:1.5;overflow-x:hidden;}
+img{display:block;}
+
+/* PAGES */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--gray4);display:flex;align-items:center;padding:0 32px;gap:0;}
+.nav-logo{font-size:1.2rem;font-weight:900;color:var(--slate);cursor:pointer;display:flex;align-items:center;gap:6px;margin-right:32px;letter-spacing:-.3px;}
+.nav-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--blue-mid);}
+.nav-links{display:flex;gap:2px;flex:1;}
+.nl{padding:8px 14px;border-radius:8px;font-size:.84rem;font-weight:500;color:var(--gray);cursor:pointer;border:none;background:none;font-family:'Inter',sans-serif;transition:all .18s;}
+.nl:hover,.nl.active{color:var(--slate);background:var(--gray5);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.btn-login{padding:9px 18px;border-radius:8px;font-size:.84rem;font-weight:600;color:var(--slate);background:none;border:1.5px solid var(--gray4);cursor:pointer;transition:all .18s;font-family:'Inter',sans-serif;}
+.btn-login:hover{border-color:var(--blue-mid);color:var(--blue-mid);}
+.btn-cta-nav{padding:9px 20px;border-radius:8px;font-size:.84rem;font-weight:700;color:var(--white);background:var(--blue-mid);border:none;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;box-shadow:var(--sb);}
+.btn-cta-nav:hover{background:var(--blue);transform:translateY(-1px);box-shadow:0 12px 28px rgba(37,99,235,.35);}
+.nav-ava{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue-mid),var(--indigo));color:#fff;font-size:.75rem;font-weight:700;display:none;align-items:center;justify-content:center;cursor:pointer;}
+
+/* ═══ HOME ═══ */
+#page-home{background:var(--white);}
+
+/* HERO */
+.hero{padding:100px 64px 80px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;min-height:100vh;}
+
+/* LEFT */
+.hero-left{opacity:0;transform:translateY(28px);transition:all .7s cubic-bezier(.22,1,.36,1);}
+.hero-left.in{opacity:1;transform:translateY(0);}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--blue-light);border:1px solid #BFDBFE;color:var(--blue-mid);font-size:.72rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border-radius:50px;margin-bottom:24px;}
+.hero-tag .dot-pulse{width:6px;height:6px;border-radius:50%;background:var(--green-mid);animation:dp 1.5s infinite;}
+@keyframes dp{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+
+.hero-h1{font-size:clamp(2.6rem,4.5vw,3.8rem);font-weight:900;letter-spacing:-2px;line-height:1.02;color:var(--slate);margin-bottom:20px;}
+.hero-h1 .accent{color:var(--blue-mid);}
+.hero-sub{font-size:1rem;color:var(--gray);line-height:1.75;margin-bottom:32px;max-width:500px;}
+.hero-sub strong{color:var(--slate);font-weight:600;}
+
+/* BIG CTA */
+.cta-block{margin-bottom:28px;}
+.btn-hero{display:inline-flex;align-items:center;gap:10px;background:var(--blue-mid);color:var(--white);font-family:'Inter',sans-serif;font-size:1rem;font-weight:700;padding:16px 32px;border-radius:12px;border:none;cursor:pointer;box-shadow:var(--sb);transition:all .25s;position:relative;overflow:hidden;}
+.btn-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transform:translateX(-100%);transition:transform .4s;}
+.btn-hero:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 16px 40px rgba(37,99,235,.4);}
+.btn-hero:hover::after{transform:translateX(100%);}
+.btn-hero-arrow{font-size:1.1rem;transition:transform .2s;}
+.btn-hero:hover .btn-hero-arrow{transform:translateX(4px);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--slate);font-family:'Inter',sans-serif;font-size:.9rem;font-weight:600;padding:15px 28px;border-radius:12px;border:1.5px solid var(--gray4);cursor:pointer;transition:all .2s;margin-left:12px;}
+.btn-outline:hover{border-color:var(--blue-mid);color:var(--blue-mid);}
+
+/* TRUST SIGNALS */
+.trust-signals{display:flex;flex-direction:column;gap:10px;}
+.ts-row{display:flex;gap:10px;flex-wrap:wrap;}
+.ts{display:flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;color:var(--gray);padding:7px 13px;background:var(--gray6);border:1px solid var(--gray4);border-radius:50px;}
+.ts .ts-icon{font-size:.95rem;}
+.ts.green{background:var(--green-light);border-color:#A7F3D0;color:var(--green);}
+.ts.blue{background:var(--blue-light);border-color:#BFDBFE;color:var(--blue-mid);}
+
+/* RATING ROW */
+.rating-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.stars{display:flex;gap:2px;}
+.star{color:#F59E0B;font-size:1rem;}
+.rating-text{font-size:.82rem;color:var(--gray);}
+.rating-text strong{color:var(--slate);}
+.avatar-stack{display:flex;}
+.av{width:28px;height:28px;border-radius:50%;border:2px solid #fff;margin-left:-7px;font-size:.62rem;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;}
+.av:first-child{margin-left:0;}
+
+/* HERO RIGHT — ILLUSTRATION + CARD */
+.hero-right{position:relative;opacity:0;transform:translateX(28px);transition:all .7s .15s cubic-bezier(.22,1,.36,1);}
+.hero-right.in{opacity:1;transform:translateX(0);}
+
+/* SVG ILLUSTRATION CARD */
+.illus-wrap{background:linear-gradient(145deg,var(--blue-xlight),var(--green-light));border-radius:var(--rxl);padding:32px;border:1px solid var(--gray4);box-shadow:var(--s3);position:relative;overflow:hidden;}
+.illus-wrap::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232563EB' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+
+/* TECH ILLUSTRATION SVG */
+.tech-svg{width:100%;height:220px;}
+
+/* FLOATING MINI CARDS */
+.fcard{position:absolute;background:var(--white);border-radius:14px;padding:12px 16px;box-shadow:var(--s3);border:1px solid var(--gray4);display:flex;align-items:center;gap:10px;animation:float 3.5s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.fcard-1{top:-16px;left:-20px;animation-delay:0s;}
+.fcard-2{bottom:10px;right:-20px;animation-delay:1.8s;}
+.fcard-icon{font-size:1.3rem;}
+.fcard-text strong{display:block;font-size:.82rem;font-weight:700;color:var(--slate);}
+.fcard-text span{font-size:.7rem;color:var(--gray);}
+.fcard-badge{background:var(--green-light);color:var(--green);font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:50px;margin-top:3px;display:inline-block;}
+
+/* SEARCH WIDGET */
+.search-widget{background:var(--white);border-radius:var(--rl);padding:20px;border:1px solid var(--gray4);box-shadow:var(--s2);margin-top:16px;}
+.sw-tabs{display:flex;gap:4px;background:var(--gray5);border-radius:8px;padding:3px;margin-bottom:16px;}
+.sw-tab{flex:1;padding:8px;border-radius:6px;border:none;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .18s;background:transparent;color:var(--gray);}
+.sw-tab.active{background:var(--white);color:var(--slate);box-shadow:var(--s1);}
+.sw-tab.urgent.active{color:var(--red);}
+.sw-tab.sched.active{color:var(--green);}
+.sw-search{display:flex;gap:8px;}
+.sw-input{flex:1;background:var(--gray5);border:1.5px solid transparent;border-radius:9px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:.84rem;outline:none;transition:border-color .18s;}
+.sw-input:focus{border-color:var(--blue-mid);background:var(--white);}
+.sw-btn{background:var(--blue-mid);color:#fff;border:none;border-radius:9px;padding:11px 20px;font-family:'Inter',sans-serif;font-weight:700;font-size:.84rem;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.sw-btn:hover{background:var(--blue);}
+.sw-cats{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.sw-cat{padding:5px 12px;background:var(--gray5);border:1.5px solid var(--gray4);border-radius:50px;font-size:.72rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .18s;}
+.sw-cat:hover{border-color:var(--blue-mid);color:var(--blue-mid);background:var(--blue-light);}
+
+/* STATS */
+.stats{background:var(--slate);padding:48px 64px;}
+.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:0;}
+.stat-item{text-align:center;padding:0 16px;border-right:1px solid rgba(255,255,255,.08);}
+.stat-item:last-child{border-right:none;}
+.stat-n{font-size:2rem;font-weight:900;color:#fff;letter-spacing:-1px;}
+.stat-l{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:4px;}
+.stat-change{font-size:.68rem;color:var(--green-mid);font-weight:600;margin-top:3px;}
+
+/* TRUST SECTION */
+.trust-sec{background:var(--gray6);border-top:1px solid var(--gray4);border-bottom:1px solid var(--gray4);padding:32px 64px;}
+.trust-sec-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:12px;}
+.trust-icon-wrap{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.ti-blue{background:var(--blue-light);}
+.ti-green{background:var(--green-light);}
+.ti-amber{background:var(--amber-light);}
+.ti-slate{background:var(--gray5);}
+.trust-item-text strong{display:block;font-size:.84rem;font-weight:700;color:var(--slate);}
+.trust-item-text span{font-size:.74rem;color:var(--gray);}
+.trust-divider{width:1px;height:40px;background:var(--gray4);}
+
+/* HOW IT WORKS */
+.sec{padding:80px 64px;max-width:1200px;margin:0 auto;}
+.sec-eye{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue-mid);margin-bottom:10px;}
+.sec-title{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:900;letter-spacing:-1px;color:var(--slate);margin-bottom:10px;}
+.sec-sub{font-size:.9rem;color:var(--gray);max-width:480px;line-height:1.7;}
+.sec-header{margin-bottom:52px;}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.step{background:var(--white);border-radius:var(--rl);padding:28px;border:1px solid var(--gray4);position:relative;overflow:hidden;transition:all .3s;cursor:default;}
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue-mid);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.step:hover{box-shadow:var(--s3);transform:translateY(-4px);border-color:transparent;}
+.step:hover::before{transform:scaleX(1);}
+.step:nth-child(2)::before{background:var(--green);}
+.step:nth-child(3)::before{background:var(--amber);}
+.step-n{font-size:.68rem;font-weight:800;letter-spacing:1px;color:var(--gray2);margin-bottom:14px;}
+.step-ico{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:14px;}
+.ico-b{background:var(--blue-light);}
+.ico-g{background:var(--green-light);}
+.ico-a{background:var(--amber-light);}
+.step h3{font-size:.95rem;font-weight:700;color:var(--slate);margin-bottom:8px;}
+.step p{font-size:.82rem;color:var(--gray);line-height:1.65;}
+
+/* CATEGORIES */
+.cats-sec{background:var(--gray6);border-top:1px solid var(--gray4);}
+.cats-inner{max-width:1200px;margin:0 auto;padding:80px 64px;}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:44px;}
+.cat-p{background:var(--white);border-radius:var(--r);padding:16px 10px;text-align:center;cursor:pointer;transition:all .22s;border:1.5px solid var(--gray4);}
+.cat-p:hover,.cat-p.s{background:var(--blue-light);border-color:var(--blue-mid);}
+.cat-p .ci{font-size:1.6rem;display:block;margin-bottom:7px;}
+.cat-p .cn{font-size:.72rem;font-weight:700;color:var(--slate);}
+.cat-p .cc{font-size:.65rem;color:var(--gray2);margin-top:2px;}
+
+/* TESTIMONIALS */
+.test-sec{padding:80px 64px;background:var(--white);}
+.test-sec-inner{max-width:1200px;margin:0 auto;}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;}
+.test-card{background:var(--gray6);border-radius:var(--rl);padding:28px;border:1px solid var(--gray4);}
+.test-stars{display:flex;gap:2px;margin-bottom:14px;}
+.test-text{font-size:.875rem;color:var(--slate);line-height:1.7;margin-bottom:20px;font-style:italic;}
+.test-author{display:flex;align-items:center;gap:12px;}
+.test-ava{width:40px;height:40px;border-radius:50%;font-size:1rem;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;}
+.test-info strong{display:block;font-size:.84rem;font-weight:700;color:var(--slate);}
+.test-info span{font-size:.72rem;color:var(--gray);}
+.test-tag{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:50px;background:var(--green-light);color:var(--green);margin-top:4px;}
+
+/* ═══ BUSCAR ═══ */
+#page-buscar{padding-top:64px;background:var(--gray6);}
+.buscar-top{background:var(--white);border-bottom:1px solid var(--gray4);padding:24px 40px;}
+.bt-inner{max-width:1200px;margin:0 auto;}
+.bt-inner h1{font-size:1.35rem;font-weight:800;letter-spacing:-.4px;margin-bottom:18px;}
+.filtros{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.fsel{background:var(--gray6);border:1.5px solid var(--gray4);border-radius:9px;padding:9px 14px;font-family:'Inter',sans-serif;font-size:.81rem;font-weight:500;color:var(--slate);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;min-width:130px;}
+.fsel:focus{border-color:var(--blue-mid);}
+.fw{position:relative;}
+.fa{position:absolute;right:11px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--gray2);font-size:.65rem;}
+.mode-btns{display:flex;gap:5px;}
+.mfb{padding:9px 16px;border-radius:9px;border:1.5px solid var(--gray4);background:var(--white);color:var(--gray);font-family:'Inter',sans-serif;font-size:.81rem;font-weight:600;cursor:pointer;transition:all .18s;}
+.mfb.mu{background:var(--red-light);border-color:#FCA5A5;color:var(--red);}
+.mfb.ms{background:var(--green-light);border-color:#6EE7B7;color:var(--green);}
+.active-tags{display:none;align-items:center;gap:7px;margin-top:12px;flex-wrap:wrap;}
+.active-tags.show{display:flex;}
+.atag{display:inline-flex;align-items:center;gap:4px;background:var(--blue-light);color:var(--blue-mid);padding:3px 10px;border-radius:50px;font-size:.73rem;font-weight:700;}
+.atag button{background:none;border:none;cursor:pointer;color:var(--blue-mid);font-size:.8rem;line-height:1;}
+.rc{font-size:.78rem;color:var(--gray);margin-top:10px;}
+.rc strong{color:var(--slate);}
+
+/* SUBCAT DD */
+.scdd{background:var(--white);border:1px solid var(--gray4);border-radius:var(--r);padding:6px;position:absolute;top:calc(100% + 6px);left:0;min-width:200px;z-index:200;box-shadow:var(--s3);display:none;}
+.scdd.open{display:block;}
+.sci{padding:8px 12px;border-radius:7px;font-size:.81rem;cursor:pointer;transition:background .13s;color:var(--slate);}
+.sci:hover{background:var(--gray5);}
+.sci.sel{background:var(--blue-light);color:var(--blue-mid);font-weight:600;}
+
+.bb{max-width:1200px;margin:0 auto;padding:28px 40px;}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;}
+
+/* PCARD */
+.pcard{background:var(--white);border-radius:var(--rl);border:1px solid var(--gray4);overflow:hidden;cursor:pointer;transition:all .3s;position:relative;}
+.pcard:hover{box-shadow:var(--s3);border-color:transparent;transform:translateY(-3px);}
+.pcard-ft{border-color:var(--blue-mid);}
+.ft-b{position:absolute;top:12px;right:12px;background:var(--blue-mid);color:#fff;font-size:.66rem;font-weight:700;padding:3px 9px;border-radius:50px;z-index:1;}
+.pc-img{height:110px;display:flex;align-items:center;justify-content:center;font-size:3.2rem;background:linear-gradient(135deg,var(--gray6),var(--gray5));}
+.pc-body{padding:18px;}
+.pc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;}
+.pc-name{font-size:.92rem;font-weight:700;color:var(--slate);}
+.pc-rating{display:flex;align-items:center;gap:3px;font-size:.78rem;}
+.pc-rating .s{color:#F59E0B;}
+.pc-rating .n{font-weight:700;color:var(--slate);}
+.pc-rating .c{color:var(--gray2);}
+.pc-cat{font-size:.72rem;color:var(--blue-mid);font-weight:600;margin-bottom:8px;}
+.pc-ver{display:inline-flex;align-items:center;gap:3px;background:var(--green-light);color:var(--green);font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:50px;margin-bottom:9px;}
+.pc-desc{font-size:.78rem;color:var(--gray);line-height:1.55;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.pc-meta{font-size:.73rem;color:var(--gray);margin-bottom:13px;}
+.pc-ftr{display:flex;gap:7px;}
+.btn-ver2{flex:1;padding:9px;border-radius:8px;background:var(--gray5);color:var(--slate);font-weight:600;font-size:.78rem;border:none;cursor:pointer;transition:all .18s;font-family:'Inter',sans-serif;}
+.btn-ver2:hover{background:var(--gray4);}
+.btn-sol2{flex:2;padding:9px;border-radius:8px;background:var(--blue-mid);color:#fff;font-weight:700;font-size:.78rem;border:none;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.btn-sol2:hover{background:var(--blue);}
+
+/* ═══ PERFIL ═══ */
+#page-perfil{padding-top:64px;background:var(--gray6);}
+.ph{background:var(--white);border-bottom:1px solid var(--gray4);padding:40px 40px 0;}
+.ph-inner{max-width:960px;margin:0 auto;}
+.ph-row{display:flex;gap:22px;align-items:flex-start;margin-bottom:24px;}
+.ph-ava{width:80px;height:80px;border-radius:16px;background:linear-gradient(135deg,var(--blue-mid),var(--indigo));display:flex;align-items:center;justify-content:center;font-size:2.2rem;flex-shrink:0;}
+.ph-meta{flex:1;}
+.ph-name{font-size:1.6rem;font-weight:900;letter-spacing:-.5px;color:var(--slate);margin-bottom:7px;}
+.ph-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.pbg{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:50px;font-size:.68rem;font-weight:700;}
+.pbg-v{background:var(--green-light);color:var(--green);}
+.pbg-f{background:var(--amber-light);color:var(--amber);}
+.pbg-c{background:var(--blue-light);color:var(--blue-mid);}
+.ph-stars-row{display:flex;align-items:center;gap:11px;margin-bottom:8px;}
+.ph-cats-row{display:flex;gap:6px;flex-wrap:wrap;}
+.pct{background:var(--gray5);color:var(--slate);padding:3px 10px;border-radius:50px;font-size:.72rem;font-weight:600;}
+.ph-tabs{display:flex;border-top:1px solid var(--gray4);margin-top:16px;}
+.ph-tab{padding:13px 20px;font-size:.82rem;font-weight:600;color:var(--gray);border:none;background:none;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .18s;font-family:'Inter',sans-serif;}
+.ph-tab.active{color:var(--blue-mid);border-bottom-color:var(--blue-mid);}
+
+.pb{max-width:960px;margin:0 auto;padding:32px 40px;display:grid;grid-template-columns:1fr 300px;gap:24px;}
+.psec{background:var(--white);border-radius:var(--rl);padding:24px;border:1px solid var(--gray4);margin-bottom:13px;}
+.psec h3{font-size:.9rem;font-weight:700;color:var(--slate);margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid var(--gray4);}
+.pay-steps{display:flex;flex-direction:column;}
+.psi{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray4);align-items:flex-start;}
+.psi:last-child{border-bottom:none;}
+.ps-num{width:24px;height:24px;border-radius:50%;background:var(--blue-light);color:var(--blue-mid);font-weight:800;font-size:.72rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.ps-con h4{font-size:.82rem;font-weight:700;color:var(--slate);margin-bottom:2px;}
+.ps-con p{font-size:.74rem;color:var(--gray);line-height:1.5;}
+.rev{background:var(--gray6);border-radius:var(--r);padding:15px;margin-bottom:8px;border:1px solid var(--gray4);}
+.rv-top{display:flex;justify-content:space-between;margin-bottom:5px;}
+.rv-n{font-weight:700;font-size:.82rem;color:var(--slate);}
+.rv-d{font-size:.7rem;color:var(--gray2);}
+.rv-s{color:#F59E0B;font-size:.75rem;margin-bottom:4px;}
+.rv-t{font-size:.78rem;color:var(--gray);line-height:1.55;}
+.chat-area{background:var(--gray6);border-radius:10px;padding:14px;max-height:230px;overflow-y:auto;margin-bottom:10px;}
+.cmsg{margin-bottom:8px;}
+.cbub{display:inline-block;padding:8px 12px;border-radius:12px;font-size:.78rem;line-height:1.5;max-width:80%;}
+.cmsg.mine{text-align:right;}
+.cmsg.mine .cbub{background:var(--blue-mid);color:#fff;border-radius:12px 12px 3px 12px;}
+.cmsg.other .cbub{background:var(--white);border:1px solid var(--gray4);border-radius:12px 12px 12px 3px;color:var(--slate);}
+.ct{font-size:.63rem;color:var(--gray2);margin-top:2px;}
+.chat-inp{display:flex;gap:7px;}
+.chat-inp input{flex:1;background:var(--gray6);border:1.5px solid var(--gray4);border-radius:9px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:.81rem;outline:none;color:var(--slate);}
+.chat-inp input:focus{border-color:var(--blue-mid);}
+.chat-snd{background:var(--blue-mid);color:#fff;border:none;border-radius:9px;padding:9px 14px;cursor:pointer;font-weight:700;font-size:.78rem;font-family:'Inter',sans-serif;}
+
+/* SIDEBAR */
+.sc{background:var(--white);border-radius:var(--rl);padding:24px;border:1px solid var(--gray4);position:sticky;top:80px;}
+.price-from{font-size:.68rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.price-val{font-size:1.8rem;font-weight:900;letter-spacing:-1px;color:var(--slate);margin-bottom:1px;}
+.price-sub{font-size:.72rem;color:var(--gray);margin-bottom:16px;}
+.mod-opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:15px;}
+.mo{border:1.5px solid var(--gray4);border-radius:9px;padding:10px;text-align:center;cursor:pointer;transition:all .18s;}
+.mo:hover,.mo.sel{border-color:var(--blue-mid);background:var(--blue-light);}
+.mo .mi{font-size:1rem;display:block;margin-bottom:3px;}
+.mo .ml{font-size:.68rem;font-weight:700;color:var(--gray);}
+.mo.sel .ml{color:var(--blue-mid);}
+.avail-row{display:flex;align-items:center;gap:6px;font-size:.77rem;color:var(--gray);margin-bottom:15px;}
+.dg{width:7px;height:7px;border-radius:50%;background:var(--green-mid);animation:pulse 2s infinite;display:inline-block;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.sc .btn-main{width:100%;padding:13px;background:var(--blue-mid);color:#fff;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s;box-shadow:var(--sb);}
+.sc .btn-main:hover{background:var(--blue);transform:translateY(-1px);}
+.sc-note{text-align:center;font-size:.7rem;color:var(--gray2);margin-top:8px;}
+.sc-guarantee{display:flex;align-items:center;gap:6px;background:var(--green-light);border-radius:8px;padding:10px 12px;margin-top:12px;font-size:.74rem;color:var(--green);font-weight:600;}
+
+/* ═══ AUTH ═══ */
+#page-auth{padding-top:64px;min-height:100vh;background:var(--gray6);display:flex;align-items:center;justify-content:center;}
+.auth-w{display:grid;grid-template-columns:1fr 1fr;max-width:860px;width:100%;margin:40px 20px;background:var(--white);border-radius:var(--rxl);overflow:hidden;box-shadow:var(--s3);border:1px solid var(--gray4);}
+.auth-l{background:linear-gradient(160deg,var(--slate) 0%,var(--blue) 100%);padding:44px 36px;display:flex;flex-direction:column;justify-content:space-between;}
+.auth-l-logo{font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:40px;}
+.auth-l h2{font-size:1.6rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:10px;}
+.auth-l p{color:rgba(255,255,255,.5);font-size:.82rem;line-height:1.65;}
+.auth-perks{margin-top:26px;display:flex;flex-direction:column;gap:10px;}
+.auth-perk{display:flex;align-items:center;gap:8px;font-size:.78rem;color:rgba(255,255,255,.65);}
+.pi{width:24px;height:24px;border-radius:7px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.78rem;flex-shrink:0;}
+.auth-r{padding:44px 36px;overflow-y:auto;}
+.auth-tabs{display:flex;gap:4px;background:var(--gray5);border-radius:8px;padding:3px;margin-bottom:24px;}
+.auth-tab{flex:1;padding:9px;border-radius:6px;border:none;font-family:'Inter',sans-serif;font-size:.81rem;font-weight:600;cursor:pointer;transition:all .18s;background:transparent;color:var(--gray);}
+.auth-tab.active{background:var(--white);color:var(--slate);box-shadow:var(--s1);}
+.role-sel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.role-card{border:2px solid var(--gray4);border-radius:var(--r);padding:15px;text-align:center;cursor:pointer;transition:all .18s;}
+.role-card:hover,.role-card.sel{border-color:var(--blue-mid);background:var(--blue-light);}
+.role-card .ri{font-size:1.4rem;display:block;margin-bottom:6px;}
+.role-card .rn{font-weight:700;font-size:.82rem;color:var(--slate);}
+.role-card .rs{font-size:.68rem;color:var(--gray);margin-top:2px;}
+.role-card.sel .rn{color:var(--blue-mid);}
+.fg{margin-bottom:13px;}
+.fg label{display:block;font-size:.7rem;font-weight:800;color:var(--gray);margin-bottom:5px;letter-spacing:.5px;text-transform:uppercase;}
+.fi{width:100%;padding:10px 13px;border-radius:9px;background:var(--gray6);border:1.5px solid var(--gray4);font-family:'Inter',sans-serif;font-size:.84rem;color:var(--slate);outline:none;transition:border-color .18s;}
+.fi:focus{border-color:var(--blue-mid);background:var(--white);}
+.fchk{display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:var(--gray);margin-bottom:14px;}
+.fchk input{margin-top:2px;accent-color:var(--blue-mid);}
+.fchk a{color:var(--blue-mid);}
+.auth-sub{width:100%;padding:13px;background:var(--blue-mid);color:#fff;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s;margin-bottom:10px;box-shadow:var(--sb);}
+.auth-sub:hover{background:var(--blue);transform:translateY(-1px);}
+.auth-sw{text-align:center;font-size:.77rem;color:var(--gray);}
+.auth-sw a{color:var(--blue-mid);cursor:pointer;font-weight:600;}
+.pf{display:none;}
+.pf.show{display:block;}
+
+/* ═══ ADMIN ═══ */
+#page-admin{padding-top:64px;background:var(--gray6);min-height:100vh;}
+.admin-w{display:flex;min-height:calc(100vh - 64px);}
+.admin-sb{width:215px;background:var(--white);border-right:1px solid var(--gray4);padding:18px 12px;flex-shrink:0;}
+.asb-sec{margin-bottom:18px;}
+.asb-lbl{font-size:.63rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray2);padding:0 10px;margin-bottom:6px;}
+.asb-btn{display:flex;align-items:center;gap:8px;width:100%;padding:9px 10px;border-radius:8px;border:none;background:none;font-family:'Inter',sans-serif;font-size:.81rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .18s;text-align:left;}
+.asb-btn:hover{background:var(--gray5);color:var(--slate);}
+.asb-btn.active{background:var(--blue-light);color:var(--blue-mid);}
+.admin-main{flex:1;padding:32px;overflow-x:hidden;}
+.asec{display:none;}
+.asec.active{display:block;}
+.asec-title{font-size:1.4rem;font-weight:900;letter-spacing:-.4px;color:var(--slate);margin-bottom:2px;}
+.asec-sub{color:var(--gray);font-size:.81rem;margin-bottom:24px;}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:12px;margin-bottom:28px;}
+.kpi{background:var(--white);border-radius:var(--r);padding:20px;border:1px solid var(--gray4);}
+.kpi-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.kpi-lbl{font-size:.67rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;}
+.kpi-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.kpi-num{font-size:1.7rem;font-weight:900;letter-spacing:-1px;color:var(--slate);}
+.kpi-trend{font-size:.67rem;color:var(--green);margin-top:2px;}
+.dt{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--rl);overflow:hidden;border:1px solid var(--gray4);}
+.dt thead{background:var(--gray6);}
+.dt th{padding:10px 14px;text-align:left;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);border-bottom:1px solid var(--gray4);}
+.dt td{padding:12px 14px;font-size:.8rem;border-bottom:1px solid var(--gray4);color:var(--slate);}
+.dt tr:last-child td{border-bottom:none;}
+.dt tr:hover td{background:var(--gray6);}
+.spill{display:inline-block;padding:2px 8px;border-radius:50px;font-size:.67rem;font-weight:700;}
+.sp{background:var(--amber-light);color:var(--amber);}
+.sa{background:var(--green-light);color:var(--green);}
+.sr{background:var(--red-light);color:var(--red);}
+.sf{background:var(--blue-light);color:var(--blue-mid);}
+.tbtn{padding:5px 11px;border-radius:6px;font-size:.7rem;font-weight:700;border:none;cursor:pointer;transition:all .18s;margin-right:3px;font-family:'Inter',sans-serif;}
+.tba{background:var(--green-light);color:var(--green);}
+.tba:hover{background:var(--green);color:#fff;}
+.tbr{background:var(--red-light);color:var(--red);}
+.tbr:hover{background:var(--red);color:#fff;}
+.tbe{background:var(--blue-light);color:var(--blue-mid);}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:11px;margin-top:16px;}
+.cat-adm{background:var(--white);border-radius:var(--r);padding:17px;border:1px solid var(--gray4);}
+.cah{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.can{font-weight:700;font-size:.88rem;color:var(--slate);}
+.caa{display:flex;gap:4px;}
+.ibtn{width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .18s;}
+.subcl{display:flex;flex-wrap:wrap;gap:4px;}
+.scc{background:var(--gray5);color:var(--gray);padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:600;}
+.add-cat-btn{border:2px dashed var(--gray3);background:transparent;border-radius:var(--r);padding:17px;text-align:center;cursor:pointer;font-size:.8rem;font-weight:700;color:var(--gray);transition:all .18s;width:100%;font-family:'Inter',sans-serif;}
+.add-cat-btn:hover{border-color:var(--blue-mid);color:var(--blue-mid);}
+.publi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:16px;}
+.ps{background:var(--white);border-radius:var(--r);padding:20px;border:1px solid var(--gray4);}
+.psh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
+.psn{font-weight:700;font-size:.85rem;color:var(--slate);}
+.psp{font-weight:900;color:var(--blue-mid);}
+.psd{font-size:.74rem;color:var(--gray);line-height:1.5;margin-bottom:13px;}
+.psbw{display:flex;align-items:center;gap:6px;}
+.psb{flex:1;height:4px;background:var(--gray4);border-radius:2px;overflow:hidden;}
+.psf{height:100%;background:var(--blue-mid);border-radius:2px;}
+.pspc{font-size:.68rem;color:var(--gray);min-width:24px;text-align:right;}
+.psst{display:inline-block;margin-top:10px;font-size:.67rem;font-weight:700;padding:2px 8px;border-radius:50px;}
+.psf-tag{background:var(--red-light);color:var(--red);}
+.psa-tag{background:var(--green-light);color:var(--green);}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;}
+.modal{background:var(--white);border-radius:var(--rxl);padding:36px;max-width:440px;width:100%;border:1px solid var(--gray4);animation:mi .25s cubic-bezier(.4,0,.2,1);}
+@keyframes mi{from{opacity:0;transform:scale(.95) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.modal h3{font-size:1.15rem;font-weight:800;color:var(--slate);margin-bottom:4px;}
+.modal .ms{color:var(--gray);font-size:.81rem;margin-bottom:22px;}
+.modal-ftr{display:flex;gap:8px;margin-top:20px;}
+.btn-cancel{flex:1;padding:11px;border-radius:10px;background:var(--gray5);border:1px solid var(--gray4);color:var(--gray);font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;font-size:.82rem;}
+.btn-confirm{flex:2;padding:11px;border-radius:10px;background:var(--blue-mid);color:#fff;border:none;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;font-size:.82rem;box-shadow:var(--sb);}
+.btn-confirm:hover{background:var(--blue);}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--slate);color:#fff;padding:12px 18px;border-radius:12px;font-size:.82rem;font-weight:500;z-index:5000;transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:var(--s3);max-width:290px;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:all .6s cubic-bezier(.22,1,.36,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+.admin-link{position:fixed;bottom:16px;left:16px;z-index:800;background:var(--slate);color:#fff;border:none;border-radius:8px;padding:7px 13px;font-size:.7rem;font-weight:700;cursor:pointer;opacity:.55;font-family:'Inter',sans-serif;}
+.admin-link:hover{opacity:1;}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:36px;padding:90px 24px 60px;}.hero-right{display:none;}
+  .stats{padding:36px 24px;}.stats-inner{grid-template-columns:repeat(3,1fr);}
+  .trust-sec{padding:24px;}.trust-sec-inner{flex-direction:column;gap:16px;}
+  .auth-w{grid-template-columns:1fr;}.auth-l{display:none;}
+  .pb{grid-template-columns:1fr;}.admin-sb{display:none;}
+  .steps,.test-grid{grid-template-columns:1fr;}
+  .sec,.cats-inner,.test-sec-inner{padding-left:24px;padding-right:24px;}
+  .buscar-top,.bb{padding-left:16px;padding-right:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="goPage('home')">ServiYa <div class="nav-logo-dot"></div></div>
+  <div class="nav-links">
+    <button class="nl active" id="nl-h" onclick="goPage('home');setNL(this)">Inicio</button>
+    <button class="nl" id="nl-b" onclick="goPage('buscar');setNL(this)">Buscar servicios</button>
+    <button class="nl" id="nl-o" onclick="goPage('auth');switchAuth('register');setNL(this)">Ofrecer servicios</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn-login" onclick="goPage('auth');switchAuth('login')">Iniciar sesión</button>
+    <button class="btn-cta-nav" onclick="goPage('auth');switchAuth('register')">Registrarse gratis</button>
+    <div class="nav-ava" id="navAva">JS</div>
+  </div>
+</nav>
+
+<!-- ════ HOME ════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left" id="heroL">
+      <div class="hero-tag"><span class="dot-pulse"></span>Disponibles ahora mismo</div>
+      <h1 class="hero-h1">
+        Encuentra el<br>
+        servicio que<br>
+        <span class="accent">necesitas hoy</span>
+      </h1>
+      <p class="hero-sub">Plomeros, electricistas, mecánicos y más — <strong>verificados, calificados</strong> y a tu alcance. Sin intermediarios, con total transparencia.</p>
+
+      <div class="cta-block">
+        <button class="btn-hero" onclick="goPage('buscar')">Buscar servicio <span class="btn-hero-arrow">→</span></button>
+        <button class="btn-outline" onclick="goPage('auth');switchAuth('register')">💼 Ofrecer mis servicios</button>
+      </div>
+
+      <div class="rating-row">
+        <div class="avatar-stack">
+          <div class="av" style="background:linear-gradient(135deg,#6366F1,#8B5CF6)">MR</div>
+          <div class="av" style="background:linear-gradient(135deg,#10B981,#059669)">AT</div>
+          <div class="av" style="background:linear-gradient(135deg,#F59E0B,#D97706)">LP</div>
+          <div class="av" style="background:linear-gradient(135deg,#EF4444,#DC2626)">SC</div>
+        </div>
+        <div class="stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <div class="rating-text"><strong>4.86/5</strong> basado en <strong>12,430</strong> servicios</div>
+      </div>
+
+      <div class="trust-signals">
+        <div class="ts-row">
+          <div class="ts green"><span class="ts-icon">🛡️</span>Prestadores verificados</div>
+          <div class="ts blue"><span class="ts-icon">💳</span>Pago seguro al finalizar</div>
+          <div class="ts"><span class="ts-icon">🔒</span>Protección al cliente</div>
+          <div class="ts green"><span class="ts-icon">✅</span>Validación de identidad</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right" id="heroR">
+      <div class="fcard fcard-1">
+        <div class="fcard-icon">⭐</div>
+        <div class="fcard-text"><strong>Carlos M. — Plomero</strong><span>4.9 · 127 servicios · Bogotá</span></div>
+      </div>
+
+      <div class="illus-wrap">
+        <!-- SVG ILLUSTRATION -->
+        <svg class="tech-svg" viewBox="0 0 400 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background shapes -->
+          <rect x="20" y="60" width="360" height="140" rx="16" fill="white" opacity=".6"/>
+          <!-- Person silhouette -->
+          <circle cx="90" cy="95" r="22" fill="#BFDBFE"/>
+          <rect x="68" y="118" width="44" height="60" rx="8" fill="#93C5FD"/>
+          <!-- Tool in hand -->
+          <rect x="108" y="130" width="50" height="8" rx="4" fill="#1E3A8A" transform="rotate(-30 108 130)"/>
+          <circle cx="152" cy="112" r="6" fill="#2563EB"/>
+          <!-- Speech bubble -->
+          <rect x="140" y="70" width="200" height="70" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+          <polygon points="148,140 140,155 165,140" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+          <!-- Content in bubble -->
+          <rect x="158" y="84" width="80" height="8" rx="4" fill="#EFF6FF"/>
+          <rect x="158" y="98" width="120" height="6" rx="3" fill="#F1F5F9"/>
+          <rect x="158" y="110" width="100" height="6" rx="3" fill="#F1F5F9"/>
+          <!-- Price badge -->
+          <rect x="280" y="88" width="46" height="22" rx="6" fill="#059669"/>
+          <text x="303" y="103" fill="white" font-size="10" font-weight="700" text-anchor="middle" font-family="Inter">$45K</text>
+          <!-- Stars in bubble -->
+          <text x="158" y="137" fill="#F59E0B" font-size="14">★★★★★</text>
+          <!-- Bottom service cards -->
+          <rect x="30" y="168" width="100" height="25" rx="8" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+          <text x="80" y="184" fill="#2563EB" font-size="9" font-weight="700" text-anchor="middle" font-family="Inter">🔧 Plomería</text>
+          <rect x="142" y="168" width="100" height="25" rx="8" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+          <text x="192" y="184" fill="#059669" font-size="9" font-weight="700" text-anchor="middle" font-family="Inter">✓ Verificado</text>
+          <rect x="254" y="168" width="108" height="25" rx="8" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+          <text x="308" y="184" fill="#D97706" font-size="9" font-weight="700" text-anchor="middle" font-family="Inter">⏱ Disponible ya</text>
+        </svg>
+
+        <div class="search-widget">
+          <div class="sw-tabs">
+            <button class="sw-tab urgent active" onclick="swTab(this)">🚨 Urgente</button>
+            <button class="sw-tab sched" onclick="swTab(this)">📅 Programar</button>
+          </div>
+          <div class="sw-search">
+            <input type="text" class="sw-input" placeholder="¿Qué servicio necesitas?">
+            <button class="sw-btn" onclick="goPage('buscar')">Buscar</button>
+          </div>
+          <div class="sw-cats">
+            <div class="sw-cat" onclick="goCat('Plomería')">🔧 Plomería</div>
+            <div class="sw-cat" onclick="goCat('Electricidad')">⚡ Eléctrico</div>
+            <div class="sw-cat" onclick="goCat('Mecánica')">🚗 Mecánica</div>
+            <div class="sw-cat" onclick="goCat('Aseo')">🧹 Aseo</div>
+            <div class="sw-cat" onclick="goCat('Belleza')">💅 Belleza</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fcard fcard-2">
+        <div class="fcard-icon">✅</div>
+        <div class="fcard-text"><strong>Servicio completado</strong><span>Pago liberado · Nequi</span><div class="fcard-badge">+1 Calificación</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-n">4,200+</div><div class="stat-l">Prestadores activos</div><div class="stat-change">↑ +34 esta semana</div></div>
+      <div class="stat-item"><div class="stat-n">18,000+</div><div class="stat-l">Servicios prestados</div><div class="stat-change">↑ +342 este mes</div></div>
+      <div class="stat-item"><div class="stat-n">4.86 ★</div><div class="stat-l">Calificación promedio</div><div class="stat-change">De 12,430 reseñas</div></div>
+      <div class="stat-item"><div class="stat-n">&lt; 8 min</div><div class="stat-l">Respuesta promedio</div><div class="stat-change">Modo urgente</div></div>
+      <div class="stat-item"><div class="stat-n">6 países</div><div class="stat-l">Expansión regional</div><div class="stat-change">🇨🇴🇪🇨🇵🇪🇲🇽🇻🇪🇩🇴</div></div>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-sec">
+    <div class="trust-sec-inner">
+      <div class="trust-item"><div class="trust-icon-wrap ti-blue">🛡️</div><div class="trust-item-text"><strong>Validación de identidad</strong><span>Verificación de antecedentes automatizada</span></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon-wrap ti-green">⭐</div><div class="trust-item-text"><strong>Sistema de calificaciones</strong><span>Reputación pública transparente</span></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon-wrap ti-amber">💳</div><div class="trust-item-text"><strong>Pago al finalizar</strong><span>Sin anticipos. Por Nequi. Sin riesgos.</span></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon-wrap ti-slate">🔒</div><div class="trust-item-text"><strong>Datos protegidos</strong><span>Ley 1581 de 2012 · Colombia</span></div></div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="sec">
+    <div class="sec-header reveal">
+      <div class="sec-eye">¿Cómo funciona?</div>
+      <h2 class="sec-title">Sin sorpresas. Sin anticipos.</h2>
+      <p class="sec-sub">De la solicitud al pago, todo es claro y dentro de la plataforma.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="step-n">PASO 01</div><div class="step-ico ico-b">🔍</div><h3>Busca y filtra</h3><p>Selecciona categoría, ciudad y disponibilidad. En modo urgente ves quién está a menos de 5 km y disponible ahora mismo.</p></div>
+      <div class="step reveal" style="transition-delay:.1s"><div class="step-n">PASO 02</div><div class="step-ico ico-g">💬</div><h3>Habla y acuerda</h3><p>Chat interno protegido. Para trabajos como plomería o mecánica, el prestador visita, diagnostica y te envía el presupuesto exacto antes de empezar.</p></div>
+      <div class="step reveal" style="transition-delay:.2s"><div class="step-n">PASO 03</div><div class="step-ico ico-a">⭐</div><h3>Paga y califica</h3><p>Pago directo por Nequi al finalizar. Sin anticipos. Luego califica con estrellas para construir la reputación del prestador.</p></div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="cats-sec">
+    <div class="cats-inner">
+      <div class="sec-eye">Categorías</div>
+      <h2 class="sec-title">Todo lo que necesitas</h2>
+      <div class="cats-grid">
+        <div class="cat-p" onclick="goCat('Plomería')"><span class="ci">🔧</span><div class="cn">Plomería</div><div class="cc">142</div></div>
+        <div class="cat-p" onclick="goCat('Electricidad')"><span class="ci">⚡</span><div class="cn">Electricidad</div><div class="cc">98</div></div>
+        <div class="cat-p" onclick="goCat('Mecánica')"><span class="ci">🚗</span><div class="cn">Mecánica</div><div class="cc">115</div></div>
+        <div class="cat-p" onclick="goCat('Carpintería')"><span class="ci">🪵</span><div class="cn">Carpintería</div><div class="cc">67</div></div>
+        <div class="cat-p" onclick="goCat('Aseo')"><span class="ci">🧹</span><div class="cn">Aseo</div><div class="cc">203</div></div>
+        <div class="cat-p" onclick="goCat('Belleza')"><span class="ci">💅</span><div class="cn">Belleza</div><div class="cc">178</div></div>
+        <div class="cat-p" onclick="goCat('Tecnología')"><span class="ci">💻</span><div class="cn">Tecnología</div><div class="cc">89</div></div>
+        <div class="cat-p" onclick="goCat('Mascotas')"><span class="ci">🐕</span><div class="cn">Mascotas</div><div class="cc">44</div></div>
+        <div class="cat-p" onclick="goCat('Mudanzas')"><span class="ci">📦</span><div class="cn">Mudanzas</div><div class="cc">37</div></div>
+        <div class="cat-p" onclick="goCat('Clases')"><span class="ci">🎓</span><div class="cn">Clases</div><div class="cc">122</div></div>
+        <div class="cat-p" onclick="goCat('Cerrajería')"><span class="ci">🔑</span><div class="cn">Cerrajería</div><div class="cc">55</div></div>
+        <div class="cat-p" onclick="goCat('Pintura')"><span class="ci">🖌️</span><div class="cn">Pintura</div><div class="cc">76</div></div>
+        <div class="cat-p" onclick="goCat('Salud')"><span class="ci">🩺</span><div class="cn">Salud</div><div class="cc">33</div></div>
+        <div class="cat-p" onclick="goCat('Jardinería')"><span class="ci">🌿</span><div class="cn">Jardinería</div><div class="cc">48</div></div>
+        <div class="cat-p" onclick="goCat('Eventos')"><span class="ci">🎉</span><div class="cn">Eventos</div><div class="cc">61</div></div>
+        <div class="cat-p" onclick="goPage('buscar')"><span class="ci">➕</span><div class="cn">Más</div><div class="cc">Ver todas</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="test-sec">
+    <div class="test-sec-inner">
+      <div class="sec-eye reveal">Lo que dicen nuestros usuarios</div>
+      <h2 class="sec-title reveal">Confianza construida servicio a servicio</h2>
+      <div class="test-grid">
+        <div class="test-card reveal">
+          <div class="test-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text">"Carlos llegó en 20 minutos, diagnosticó el problema, me dio el precio exacto y lo arregló en 2 horas. Sin sorpresas, sin cobros extras. Esto es lo que buscaba."</p>
+          <div class="test-author">
+            <div class="test-ava" style="background:linear-gradient(135deg,#6366F1,#8B5CF6)">PV</div>
+            <div class="test-info"><strong>Patricia Vargas</strong><span>Bogotá · Plomería</span><div class="test-tag">✓ Servicio verificado</div></div>
+          </div>
+        </div>
+        <div class="test-card reveal" style="transition-delay:.1s">
+          <div class="test-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text">"Por fin una app donde puedo ver el historial de una persona antes de dejarla entrar a mi casa. La verificación me da mucha tranquilidad."</p>
+          <div class="test-author">
+            <div class="test-ava" style="background:linear-gradient(135deg,#10B981,#059669)">HR</div>
+            <div class="test-info"><strong>Hernando Ruiz</strong><span>Medellín · Electricidad</span><div class="test-tag">✓ Servicio verificado</div></div>
+          </div>
+        </div>
+        <div class="test-card reveal" style="transition-delay:.2s">
+          <div class="test-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+          <p class="test-text">"Como plomero, ServiYa me dio visibilidad que nunca pude conseguir por mi cuenta. Tengo clientes todos los días y mi calificación habla por mí."</p>
+          <div class="test-author">
+            <div class="test-ava" style="background:linear-gradient(135deg,#F59E0B,#D97706)">CM</div>
+            <div class="test-info"><strong>Carlos Mendoza</strong><span>Bogotá · Prestador</span><div class="test-tag" style="background:var(--blue-light);color:var(--blue-mid)">💼 Prestador verificado</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--slate);padding:56px 64px 36px;">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px;">
+        <div>
+          <div style="font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:-.3px;">ServiYa <span style="color:var(--blue-mid)">·</span></div>
+          <p style="color:rgba(255,255,255,.38);font-size:.78rem;line-height:1.75;max-width:240px;">Conectamos personas con prestadores de servicios verificados en Latinoamérica. Transparente, seguro y sin intermediarios.</p>
+          <div style="display:flex;gap:8px;margin-top:16px;">
+            <span style="font-size:1.2rem;cursor:pointer" title="Colombia">🇨🇴</span>
+            <span style="font-size:1.2rem;cursor:pointer" title="Ecuador">🇪🇨</span>
+            <span style="font-size:1.2rem;cursor:pointer" title="Perú">🇵🇪</span>
+            <span style="font-size:1.2rem;cursor:pointer" title="México">🇲🇽</span>
+            <span style="font-size:1.2rem;cursor:pointer" title="Venezuela">🇻🇪</span>
+            <span style="font-size:1.2rem;cursor:pointer" title="Rep. Dominicana">🇩🇴</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.62rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:13px;">Consumidores</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;transition:color .18s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Buscar servicios</a>
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Cómo funciona</a>
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Garantías</a>
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Soporte</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.62rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:13px;">Prestadores</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Registrarse</a>
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Certificaciones</a>
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Publicidad</a>
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Planes</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.62rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:13px;">Legal</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Términos de uso</a>
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Política de datos</a>
+            <a style="color:rgba(255,255,255,.45);font-size:.78rem;cursor:pointer;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.45)'">Acerca de</a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <span style="color:rgba(255,255,255,.25);font-size:.72rem;">© 2025 ServiYa SAS · Bogotá, Colombia · NIT en trámite</span>
+        <span style="color:rgba(255,255,255,.25);font-size:.72rem;">🔒 Protegido por Ley 1581 de 2012</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ════ BUSCAR ════ -->
+<div id="page-buscar" class="page">
+  <div class="buscar-top">
+    <div class="bt-inner">
+      <h1>Servicios disponibles</h1>
+      <div class="filtros">
+        <div class="mode-btns">
+          <button class="mfb mu" id="btnU" onclick="toggleMode('u')">🚨 Urgente</button>
+          <button class="mfb" id="btnS" onclick="toggleMode('s')">📅 Programado</button>
+        </div>
+        <div class="fw"><select class="fsel" id="cityF" onchange="applyF()"><option value="">📍 Todas las ciudades</option><option>Bogotá</option><option>Medellín</option><option>Cali</option><option>Barranquilla</option></select><span class="fa">▾</span></div>
+        <div class="fw" style="position:relative">
+          <select class="fsel" id="catF" onchange="onCatChange()"><option value="">Todas las categorías</option><option>Plomería</option><option>Electricidad</option><option>Mecánica</option><option>Carpintería</option><option>Aseo</option><option>Belleza</option><option>Tecnología</option><option>Mascotas</option><option>Mudanzas</option><option>Clases</option><option>Cerrajería</option><option>Pintura</option></select><span class="fa">▾</span>
+          <div class="scdd" id="subcatDD"></div>
+        </div>
+        <div class="fw"><select class="fsel" id="ratingF" onchange="applyF()"><option value="">⭐ Calificación</option><option value="5">★★★★★ Solo 5 estrellas</option><option value="4">★★★★+ 4+ estrellas</option><option value="3">★★★+ 3+ estrellas</option></select><span class="fa">▾</span></div>
+      </div>
+      <div class="active-tags" id="atags">
+        <div class="atag" id="catTag"><span id="catTagN"></span><button onclick="clearCat()">×</button></div>
+        <div class="atag" id="subcatTag" style="display:none"><span id="subcatTagN"></span><button onclick="clearSubcat()">×</button></div>
+      </div>
+      <div class="rc" id="rc">Cargando...</div>
+    </div>
+  </div>
+  <div class="bb"><div class="rgrid" id="rgrid"></div></div>
+</div>
+
+<!-- ════ PERFIL ════ -->
+<div id="page-perfil" class="page">
+  <div class="ph">
+    <div class="ph-inner">
+      <div class="ph-row">
+        <div class="ph-ava">🔧</div>
+        <div class="ph-meta">
+          <div class="ph-name">Carlos Mendoza</div>
+          <div class="ph-badges"><span class="pbg pbg-v">✓ Verificado</span><span class="pbg pbg-f">⭐ Destacado</span><span class="pbg pbg-c">🎓 Certificado</span></div>
+          <div class="ph-stars-row"><div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div><span style="font-size:.82rem;color:var(--gray)">4.9 · 127 calificaciones · 340 servicios</span></div>
+          <div class="ph-cats-row"><span class="pct">🔧 Plomería</span><span class="pct">🚿 Duchas</span><span class="pct">🪠 Desagües</span><span class="pct">🏠 Instalaciones</span></div>
+        </div>
+      </div>
+      <div class="ph-tabs">
+        <button class="ph-tab active" onclick="switchPT(this,'info')">Información</button>
+        <button class="ph-tab" onclick="switchPT(this,'rev')">Calificaciones (127)</button>
+        <button class="ph-tab" onclick="switchPT(this,'chat')">Chat</button>
+      </div>
+    </div>
+  </div>
+  <div class="pb">
+    <div>
+      <div id="pt-info">
+        <div class="psec"><h3>Sobre mí</h3><p style="color:var(--gray);line-height:1.75;font-size:.84rem">Plomero con 12 años de experiencia en Bogotá. Reparaciones de tuberías, sanitarios, duchas y calentadores. Mi promesa: <strong style="color:var(--slate)">diagnóstico primero, presupuesto después.</strong> Nunca comienzo sin que conozcas el precio exacto.</p></div>
+        <div class="psec">
+          <h3>¿Cómo funciona el cobro?</h3>
+          <div class="pay-steps">
+            <div class="psi"><div class="ps-num">1</div><div class="ps-con"><h4>Solicitas el servicio</h4><p>Describes el problema por el chat. Coordinamos la visita.</p></div></div>
+            <div class="psi"><div class="ps-num">2</div><div class="ps-con"><h4>Diagnóstico gratuito</h4><p>Reviso el problema sin costo. Luego envío el presupuesto exacto por el chat dentro de la plataforma.</p></div></div>
+            <div class="psi"><div class="ps-num">3</div><div class="ps-con"><h4>Apruebas el presupuesto</h4><p>Solo cuando tú aceptas el valor, empezamos. Sin letra pequeña, sin cobros adicionales.</p></div></div>
+            <div class="psi"><div class="ps-num">4</div><div class="ps-con"><h4>Pagas al finalizar por Nequi</h4><p>El pago es únicamente al terminar. Directo a mi Nequi. Sin anticipos en ningún caso.</p></div></div>
+          </div>
+        </div>
+      </div>
+      <div id="pt-rev" style="display:none">
+        <div class="psec"><h3>Calificaciones</h3>
+          <div class="rev"><div class="rv-top"><div class="rv-n">Patricia V.</div><div class="rv-d">hace 2 días</div></div><div class="rv-s">★★★★★</div><div class="rv-t">Carlos llegó a tiempo, diagnóstico honesto y precio exacto al acordado. Lo recomiendo sin dudarlo.</div></div>
+          <div class="rev"><div class="rv-top"><div class="rv-n">Hernando M.</div><div class="rv-d">hace 1 semana</div></div><div class="rv-s">★★★★★</div><div class="rv-t">Instaló el calentador perfectamente. Presupuesto claro antes de empezar.</div></div>
+          <div class="rev"><div class="rv-top"><div class="rv-n">Lucía R.</div><div class="rv-d">hace 2 semanas</div></div><div class="rv-s">★★★★☆</div><div class="rv-t">Buen trabajo. Se demoró un poco más de lo estimado pero avisó con anticipación.</div></div>
+        </div>
+      </div>
+      <div id="pt-chat" style="display:none">
+        <div class="psec"><h3>Chat con Carlos</h3>
+          <div class="chat-area">
+            <div class="cmsg other"><div class="cbub">Hola, cuéntame ¿qué problema tienes?</div><div class="ct">10:32 am</div></div>
+            <div class="cmsg mine"><div class="cbub">El sanitario está botando agua al piso desde ayer</div><div class="ct">10:34 am</div></div>
+            <div class="cmsg other"><div class="cbub">Entendido. Puedo ir esta tarde. Hago el diagnóstico sin costo y te digo exactamente qué vale antes de empezar. ¿Confirmas la dirección?</div><div class="ct">10:35 am</div></div>
+          </div>
+          <div class="chat-inp"><input type="text" placeholder="Escribe tu mensaje..."><button class="chat-snd">Enviar</button></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sc">
+        <div class="price-from">Desde</div>
+        <div class="price-val">$45.000</div>
+        <div class="price-sub">COP · precio final según diagnóstico</div>
+        <div style="font-size:.7rem;font-weight:700;color:var(--gray);margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px;">Modalidad</div>
+        <div class="mod-opts">
+          <div class="mo sel" onclick="selMod(this)"><span class="mi">🚨</span><div class="ml">Urgente</div></div>
+          <div class="mo" onclick="selMod(this)"><span class="mi">📅</span><div class="ml">Programar</div></div>
+        </div>
+        <div class="avail-row"><span class="dg"></span>Disponible ahora · A 1.2 km</div>
+        <button class="btn-main" onclick="openM('modal-sol')">Solicitar servicio</button>
+        <div class="sc-note">Pago al finalizar · Sin anticipos · Nequi</div>
+        <div class="sc-guarantee">🛡️ Servicio garantizado por ServiYa</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ AUTH ════ -->
+<div id="page-auth" class="page">
+  <div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:32px 20px;">
+    <div class="auth-w">
+      <div class="auth-l">
+        <div class="auth-l-logo">ServiYa <span style="color:var(--blue-mid)">·</span></div>
+        <div>
+          <h2>Confianza en cada servicio</h2>
+          <p>Miles de colombianos conectan con prestadores verificados a través de ServiYa cada día.</p>
+          <div class="auth-perks">
+            <div class="auth-perk"><span class="pi">🛡️</span>Prestadores verificados con antecedentes</div>
+            <div class="auth-perk"><span class="pi">💳</span>Pago al finalizar, sin anticipos</div>
+            <div class="auth-perk"><span class="pi">⭐</span>Sistema de calificaciones público</div>
+            <div class="auth-perk"><span class="pi">🔒</span>Datos protegidos por ley colombiana</div>
+          </div>
+        </div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.25);">🇨🇴 Colombia · Ecuador · Perú · México</div>
+      </div>
+      <div class="auth-r">
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabL" onclick="switchAuth('login')">Iniciar sesión</button>
+          <button class="auth-tab" id="tabR" onclick="switchAuth('register')">Crear cuenta</button>
+        </div>
+        <div id="auth-login">
+          <div class="fg"><label>Correo electrónico</label><input type="email" class="fi" placeholder="tu@correo.com"></div>
+          <div class="fg"><label>Contraseña</label><input type="password" class="fi" placeholder="••••••••"></div>
+          <div style="text-align:right;margin-bottom:16px;"><a style="font-size:.74rem;color:var(--blue-mid);cursor:pointer;">¿Olvidaste tu contraseña?</a></div>
+          <button class="auth-sub" onclick="doLogin()">Iniciar sesión</button>
+          <div class="auth-sw">¿No tienes cuenta? <a onclick="switchAuth('register')">Regístrate gratis</a></div>
+        </div>
+        <div id="auth-register" style="display:none">
+          <div style="font-size:.7rem;font-weight:800;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Soy...</div>
+          <div class="role-sel">
+            <div class="role-card sel" id="rc" onclick="selRole('c')"><span class="ri">🛒</span><div class="rn">Consumidor</div><div class="rs">Necesito servicios</div></div>
+            <div class="role-card" id="rp" onclick="selRole('p')"><span class="ri">💼</span><div class="rn">Prestador</div><div class="rs">Ofrezco servicios</div></div>
+          </div>
+          <div class="fg"><label>Nombre completo</label><input type="text" class="fi" placeholder="Tu nombre completo"></div>
+          <div class="fg"><label>Correo electrónico</label><input type="email" class="fi" placeholder="tu@correo.com"></div>
+          <div class="fg"><label>Ciudad</label><select class="fi" style="cursor:pointer;"><option>Bogotá</option><option>Medellín</option><option>Cali</option><option>Barranquilla</option></select></div>
+          <div class="pf" id="pFields">
+            <div class="fg"><label>Categoría principal</label><select class="fi" style="cursor:pointer;"><option>🔧 Plomería</option><option>⚡ Electricidad</option><option>🚗 Mecánica y Vehículos</option><option>🧹 Aseo</option><option>💅 Belleza</option><option>💻 Tecnología</option><option>🪵 Carpintería</option></select></div>
+            <div class="fg"><label>Modalidad de cobro</label><select class="fi" style="cursor:pointer;"><option>Precio fijo por servicio</option><option>Presupuesto post-diagnóstico</option><option>Precio por hora</option></select></div>
+            <div class="fg"><label>Número Nequi</label><input type="tel" class="fi" placeholder="300 000 0000"></div>
+            <div class="fg"><label>Descripción de tu servicio</label><textarea class="fi" rows="2" style="resize:vertical;" placeholder="Ej: Plomero con 8 años de experiencia..."></textarea></div>
+          </div>
+          <div class="fg"><label>Contraseña</label><input type="password" class="fi" placeholder="Mínimo 8 caracteres"></div>
+          <div class="fchk"><input type="checkbox"><label>Acepto los <a href="#">Términos de uso</a> y la <a href="#">Política de tratamiento de datos personales</a> de ServiYa</label></div>
+          <button class="auth-sub" onclick="doRegister()">Crear cuenta gratis</button>
+          <div class="auth-sw">¿Ya tienes cuenta? <a onclick="switchAuth('login')">Inicia sesión</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ ADMIN ════ -->
+<div id="page-admin" class="page">
+  <div class="admin-w">
+    <div class="admin-sb">
+      <div class="asb-sec">
+        <div class="asb-lbl">Principal</div>
+        <button class="asb-btn active" onclick="showAS('dashboard',this)"><span>📊</span>Dashboard</button>
+        <button class="asb-btn" onclick="showAS('prestadores',this)"><span>👥</span>Prestadores</button>
+        <button class="asb-btn" onclick="showAS('consumidores',this)"><span>🛒</span>Consumidores</button>
+      </div>
+      <div class="asb-sec">
+        <div class="asb-lbl">Plataforma</div>
+        <button class="asb-btn" onclick="showAS('categorias',this)"><span>📂</span>Categorías</button>
+        <button class="asb-btn" onclick="showAS('publicidad',this)"><span>📢</span>Publicidad</button>
+        <button class="asb-btn" onclick="showAS('disputas',this)"><span>⚠️</span>Disputas</button>
+        <button class="asb-btn" onclick="showAS('paises',this)"><span>🌎</span>Países</button>
+      </div>
+    </div>
+    <div class="admin-main">
+      <div class="asec active" id="as-dashboard">
+        <div class="asec-title">Dashboard</div><div class="asec-sub">Tiempo real · Colombia</div>
+        <div class="kpis">
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Prestadores</span><div class="kpi-ico" style="background:var(--blue-light)">💼</div></div><div class="kpi-num" style="color:var(--blue-mid)">4,218</div><div class="kpi-trend">↑ +34 esta semana</div></div>
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Consumidores</span><div class="kpi-ico" style="background:var(--green-light)">🛒</div></div><div class="kpi-num" style="color:var(--green)">12,847</div><div class="kpi-trend">↑ +218 esta semana</div></div>
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Servicios hoy</span><div class="kpi-ico" style="background:var(--amber-light)">🔄</div></div><div class="kpi-num" style="color:var(--amber)">342</div><div class="kpi-trend">↑ vs ayer 287</div></div>
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Calificación</span><div class="kpi-ico" style="background:#FFF7ED">⭐</div></div><div class="kpi-num">4.86</div><div class="kpi-trend">12,430 reseñas</div></div>
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Pendientes</span><div class="kpi-ico" style="background:var(--amber-light)">⏳</div></div><div class="kpi-num" style="color:var(--amber)">23</div><div class="kpi-trend">Por aprobar</div></div>
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Disputas</span><div class="kpi-ico" style="background:var(--red-light)">⚠️</div></div><div class="kpi-num" style="color:var(--red)">3</div><div class="kpi-trend">Abiertas</div></div>
+        </div>
+        <div style="font-size:.9rem;font-weight:700;color:var(--slate);margin-bottom:11px;">Solicitudes recientes</div>
+        <table class="dt"><thead><tr><th>Consumidor</th><th>Prestador</th><th>Servicio</th><th>Ciudad</th><th>Estado</th></tr></thead><tbody>
+          <tr><td>Patricia V.</td><td>Carlos Mendoza</td><td>Plomería</td><td>Bogotá</td><td><span class="spill sa">En curso</span></td></tr>
+          <tr><td>Mario R.</td><td>Ana Rodríguez</td><td>Electricidad</td><td>Bogotá</td><td><span class="spill sa">Completado</span></td></tr>
+          <tr><td>Sandra P.</td><td>María Torres</td><td>Manicure</td><td>Medellín</td><td><span class="spill sa">Completado</span></td></tr>
+          <tr><td>Felipe G.</td><td>Luis Pedraza</td><td>Mecánica</td><td>Bogotá</td><td><span class="spill sp">Pendiente</span></td></tr>
+        </tbody></table>
+      </div>
+      <div class="asec" id="as-prestadores">
+        <div class="asec-title">Prestadores</div><div class="asec-sub">Gestiona aprobaciones y perfiles</div>
+        <table class="dt"><thead><tr><th>Nombre</th><th>Categoría</th><th>Ciudad</th><th>Registro</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
+          <tr><td><strong>Juan Morales</strong></td><td>🔧 Plomería</td><td>Bogotá</td><td>Hace 2h</td><td><span class="spill sp">Pendiente</span></td><td><button class="tbtn tba" onclick="toast('✅ Juan aprobado')">Aprobar</button><button class="tbtn tbr">Rechazar</button></td></tr>
+          <tr><td><strong>Claudia Ríos</strong></td><td>💅 Belleza</td><td>Medellín</td><td>Hace 5h</td><td><span class="spill sp">Pendiente</span></td><td><button class="tbtn tba" onclick="toast('✅ Claudia aprobada')">Aprobar</button><button class="tbtn tbr">Rechazar</button></td></tr>
+          <tr><td><strong>Carlos Mendoza</strong></td><td>🔧 Plomería</td><td>Bogotá</td><td>3 meses</td><td><span class="spill sa">Activo</span></td><td><button class="tbtn tbe" onclick="toast('⭐ Carlos destacado')">Destacar</button><button class="tbtn tbr">Suspender</button></td></tr>
+          <tr><td><strong>Ana Rodríguez</strong></td><td>⚡ Electricidad</td><td>Bogotá</td><td>5 meses</td><td><span class="spill sa">Activo</span> <span class="spill sf">Destacada</span></td><td><button class="tbtn tbr">Suspender</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="asec" id="as-consumidores">
+        <div class="asec-title">Consumidores</div><div class="asec-sub">Usuarios registrados</div>
+        <table class="dt"><thead><tr><th>Nombre</th><th>Ciudad</th><th>Registro</th><th>Servicios</th><th>Estado</th></tr></thead><tbody>
+          <tr><td><strong>Patricia Vargas</strong></td><td>Bogotá</td><td>2 meses</td><td>8</td><td><span class="spill sa">Activo</span></td></tr>
+          <tr><td><strong>Mario Ramírez</strong></td><td>Bogotá</td><td>3 semanas</td><td>3</td><td><span class="spill sa">Activo</span></td></tr>
+          <tr><td><strong>Sandra Pérez</strong></td><td>Medellín</td><td>1 mes</td><td>12</td><td><span class="spill sa">Activo</span></td></tr>
+        </tbody></table>
+      </div>
+      <div class="asec" id="as-categorias">
+        <div class="asec-title">Categorías</div><div class="asec-sub">Agrega, edita o elimina sin tocar código</div>
+        <button style="background:var(--blue-mid);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:Inter,sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;margin-bottom:6px;" onclick="toast('Abriendo editor...')">+ Nueva categoría</button>
+        <div class="cat-grid">
+          <div class="cat-adm"><div class="cah"><div class="can">🔧 Plomería</div><div class="caa"><button class="ibtn" style="background:var(--blue-light);color:var(--blue-mid)" onclick="toast('Editando...')">✏️</button><button class="ibtn" style="background:var(--red-light);color:var(--red)" onclick="toast('Eliminada')">🗑</button></div></div><div class="subcl"><span class="scc">Tuberías</span><span class="scc">Sanitarios</span><span class="scc">Duchas</span><span class="scc">Calentadores</span><span class="scc">Desagües</span></div></div>
+          <div class="cat-adm"><div class="cah"><div class="can">🚗 Mecánica y Vehículos</div><div class="caa"><button class="ibtn" style="background:var(--blue-light);color:var(--blue-mid)" onclick="toast('Editando...')">✏️</button><button class="ibtn" style="background:var(--red-light);color:var(--red)">🗑</button></div></div><div class="subcl"><span class="scc">Diagnóstico</span><span class="scc">Cambio aceite</span><span class="scc">Frenos</span><span class="scc">Batería</span><span class="scc">🛞 Despinche</span><span class="scc">Eléctrica auto</span><span class="scc">Lavado domicilio</span></div></div>
+          <div class="cat-adm"><div class="cah"><div class="can">⚡ Electricidad</div><div class="caa"><button class="ibtn" style="background:var(--blue-light);color:var(--blue-mid)">✏️</button><button class="ibtn" style="background:var(--red-light);color:var(--red)">🗑</button></div></div><div class="subcl"><span class="scc">Instalaciones</span><span class="scc">Tableros</span><span class="scc">Luminarias</span><span class="scc">Tomas</span><span class="scc">Cortos</span></div></div>
+          <div class="cat-adm"><div class="cah"><div class="can">💅 Belleza</div><div class="caa"><button class="ibtn" style="background:var(--blue-light);color:var(--blue-mid)">✏️</button><button class="ibtn" style="background:var(--red-light);color:var(--red)">🗑</button></div></div><div class="subcl"><span class="scc">Manicure</span><span class="scc">Pedicure</span><span class="scc">Peluquería</span><span class="scc">Maquillaje</span><span class="scc">Masajes</span><span class="scc">Depilación</span></div></div>
+          <button class="add-cat-btn" onclick="toast('Nueva categoría...')">+ Agregar categoría</button>
+        </div>
+      </div>
+      <div class="asec" id="as-publicidad">
+        <div class="asec-title">Publicidad</div><div class="asec-sub">Espacios para prestadores destacados</div>
+        <div class="publi-grid">
+          <div class="ps"><div class="psh"><div class="psn">Banner resultados</div><div class="psp">$45K/sem</div></div><div class="psd">Primero en resultados de búsqueda de su categoría y ciudad.</div><div class="psbw"><div class="psb"><div class="psf" style="width:75%"></div></div><div class="pspc">75%</div></div><span class="psst psa-tag">1 cupo disponible</span></div>
+          <div class="ps"><div class="psh"><div class="psn">Badge Destacado</div><div class="psp">$25K/sem</div></div><div class="psd">Badge visible en tarjeta dentro de resultados de búsqueda.</div><div class="psbw"><div class="psb"><div class="psf" style="width:40%"></div></div><div class="pspc">40%</div></div><span class="psst psa-tag">Cupos disponibles</span></div>
+          <div class="ps"><div class="psh"><div class="psn">Banner inicio ciudad</div><div class="psp">$80K/sem</div></div><div class="psd">Posición premium en página de inicio para tu ciudad.</div><div class="psbw"><div class="psb"><div class="psf" style="width:100%"></div></div><div class="pspc">100%</div></div><span class="psst psf-tag">Sin cupos</span></div>
+          <div class="ps"><div class="psh"><div class="psn">Sidebar perfiles</div><div class="psp">$15K/sem</div></div><div class="psd">Anuncio en perfiles de misma categoría.</div><div class="psbw"><div class="psb"><div class="psf" style="width:20%"></div></div><div class="pspc">20%</div></div><span class="psst psa-tag">Cupos disponibles</span></div>
+        </div>
+      </div>
+      <div class="asec" id="as-disputas">
+        <div class="asec-title">Disputas</div><div class="asec-sub">Conflictos entre consumidores y prestadores</div>
+        <table class="dt"><thead><tr><th>ID</th><th>Consumidor</th><th>Prestador</th><th>Motivo</th><th>Fecha</th><th>Acción</th></tr></thead><tbody>
+          <tr><td><strong>#D-001</strong></td><td>Hernando M.</td><td>José García</td><td>Trabajo incompleto</td><td>Hace 1 día</td><td><button class="tbtn tba" onclick="toast('Disputa en revisión')">Revisar</button></td></tr>
+          <tr><td><strong>#D-002</strong></td><td>Sandra P.</td><td>Miguel T.</td><td>Precio diferente</td><td>Hace 2 días</td><td><button class="tbtn tba" onclick="toast('Disputa en revisión')">Revisar</button></td></tr>
+          <tr><td><strong>#D-003</strong></td><td>Felipe R.</td><td>Rosa J.</td><td>No asistió</td><td>Hace 3 días</td><td><button class="tbtn tba" onclick="toast('Disputa en revisión')">Revisar</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="asec" id="as-paises">
+        <div class="asec-title">Expansión regional</div><div class="asec-sub">Multi-país, multi-moneda, multi-pasarela</div>
+        <div class="kpis">
+          <div class="kpi"><div class="kpi-top"><span>🇨🇴</span><span class="kpi-lbl">Colombia</span></div><div class="kpi-num" style="color:var(--green);font-size:1rem">✓ Activo</div><div class="kpi-trend">4,218 prestadores</div></div>
+          <div class="kpi"><div class="kpi-top"><span>🇪🇨</span><span class="kpi-lbl">Ecuador</span></div><div class="kpi-num" style="color:var(--gray);font-size:.9rem">Próximo</div></div>
+          <div class="kpi"><div class="kpi-top"><span>🇵🇪</span><span class="kpi-lbl">Perú</span></div><div class="kpi-num" style="color:var(--gray);font-size:.9rem">Próximo</div></div>
+          <div class="kpi"><div class="kpi-top"><span>🇲🇽</span><span class="kpi-lbl">México</span></div><div class="kpi-num" style="color:var(--gray);font-size:.9rem">Próximo</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="modal-sol">
+  <div class="modal">
+    <h3>Solicitar servicio</h3>
+    <div class="ms">Tu solicitud va directamente a Carlos. Te responderá por el chat.</div>
+    <div class="fg"><label>¿Qué necesitas?</label><textarea class="fi" rows="3" style="resize:vertical;" placeholder="Describe el problema brevemente..."></textarea></div>
+    <div class="fg"><label>¿Cuándo?</label><select class="fi" style="cursor:pointer;"><option>🚨 Ahora mismo (urgente)</option><option>📅 Hoy más tarde</option><option>📆 Mañana</option><option>🗓️ Elegir fecha</option></select></div>
+    <div class="fg"><label>Dirección</label><input type="text" class="fi" placeholder="Calle 123 # 45-67, Bogotá"></div>
+    <div class="modal-ftr">
+      <button class="btn-cancel" onclick="closeM('modal-sol')">Cancelar</button>
+      <button class="btn-confirm" onclick="closeM('modal-sol');toast('✅ Solicitud enviada. Carlos responderá pronto')">Enviar solicitud</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"></div>
+<button class="admin-link" onclick="goPage('admin')">⚙ Admin</button>
+
+<script>
+const PROVIDERS=[
+  {id:1,name:'Carlos Mendoza',cat:'Plomería',subcats:['Tuberías','Sanitarios','Duchas'],rating:4.9,reviews:127,desc:'Plomero con 12 años de experiencia. Diagnóstico gratis, presupuesto antes de empezar.',meta:'📍 1.2 km · ⏱ Disponible ahora · 💰 Desde $45.000',icon:'🔧',city:'Bogotá',featured:true,verified:true},
+  {id:2,name:'Ana Rodríguez',cat:'Electricidad',subcats:['Instalaciones','Tableros','Luminarias'],rating:4.8,reviews:89,desc:'Electricista certificada. Instalaciones, tableros, tomas y luminarias residenciales.',meta:'📍 2.4 km · ⏱ Disponible ahora · 💰 Desde $50.000',icon:'⚡',city:'Bogotá',featured:false,verified:true,certified:true},
+  {id:3,name:'Luis Pedraza',cat:'Mecánica',subcats:['Diagnóstico','Frenos','Batería','Despinche'],rating:4.7,reviews:204,desc:'Mecánico a domicilio. Diagnóstico, aceite, frenos, baterías y despinche 24/7.',meta:'📍 3.1 km · ⏱ Disponible ahora · 💰 Desde $35.000',icon:'🚗',city:'Bogotá',featured:false,verified:true},
+  {id:4,name:'María Torres',cat:'Belleza',subcats:['Manicure','Pedicure','Nail art'],rating:5.0,reviews:312,desc:'Especialista en uñas a domicilio. Acrílicas, gel, semipermanente y nail art. Precio fijo.',meta:'📍 0.8 km · 💰 Fijo $60.000 · ⏱ Hoy 3pm-8pm',icon:'💅',city:'Bogotá',featured:false,verified:true},
+  {id:5,name:'Rosa Jiménez',cat:'Aseo',subcats:['Aseo residencial','Oficinas'],rating:4.9,reviews:156,desc:'Aseo completo para hogares y oficinas. Jornada completa o por horas. Lleva insumos.',meta:'📍 1.5 km · 💰 $25.000/hora · ⏱ Lun-Sáb',icon:'🧹',city:'Medellín',featured:false,verified:true},
+  {id:6,name:'Andrés Gómez',cat:'Tecnología',subcats:['Computadores','Redes wifi'],rating:4.8,reviews:78,desc:'Técnico en sistemas a domicilio. PCs, laptops, redes wifi y soporte.',meta:'📍 4.2 km · 💰 Desde $40.000 · ✅ Diagnóstico incluido',icon:'💻',city:'Bogotá',featured:false,verified:true,certified:true},
+  {id:7,name:'Pedro Cárdenas',cat:'Cerrajería',subcats:['Apertura puertas','Cambio de chapa'],rating:4.6,reviews:93,desc:'Cerrajero 24/7. Apertura de puertas sin daños y cambio de chapas.',meta:'📍 2.8 km · ⏱ 24/7 · 💰 Desde $40.000',icon:'🔑',city:'Bogotá',featured:false,verified:true},
+  {id:8,name:'Diana Ospina',cat:'Mascotas',subcats:['Peluquería canina','Baño'],rating:4.9,reviews:201,desc:'Peluquería canina y felina a domicilio. Baño, corte y arreglo de uñas.',meta:'📍 1.9 km · 💰 Desde $35.000 · ⏱ Lun-Sáb',icon:'🐕',city:'Medellín',featured:false,verified:true},
+];
+const SUBCATS={
+  'Plomería':['Tuberías','Sanitarios','Duchas','Calentadores','Desagües'],
+  'Electricidad':['Instalaciones','Tableros','Luminarias','Tomas','Cortos'],
+  'Mecánica':['Diagnóstico','Cambio de aceite','Frenos','Batería','🛞 Despinche','Electricidad automotriz','Lavado a domicilio'],
+  'Carpintería':['Muebles','Puertas','Pisos','Reparaciones'],
+  'Aseo':['Aseo residencial','Oficinas','Desinfección','Lavado muebles'],
+  'Belleza':['Manicure','Pedicure','Peluquería','Barbería','Maquillaje','Masajes','Depilación'],
+  'Tecnología':['Computadores','Redes wifi','Impresoras','Celulares','Cámaras'],
+  'Mascotas':['Peluquería canina','Baño','Paseo','Veterinario domicilio'],
+  'Mudanzas':['Trasteos','Transporte','Carga y descarga'],
+  'Clases':['Matemáticas','Inglés','Música','Cocina'],
+  'Cerrajería':['Apertura puertas','Cambio de chapa','Duplicado llaves'],
+  'Pintura':['Residencial','Comercial','Estuco'],
+};
+let aC='',aSC='';
+
+function renderCards(data){
+  const g=document.getElementById('rgrid');g.innerHTML='';
+  data.forEach(p=>{
+    const ft=p.featured?'pcard-ft':'';
+    const fb=p.featured?'<div class="ft-b">⭐ Destacado</div>':'';
+    const vb=p.verified?`<div class="pc-ver">✓ Verificado${p.certified?' · 🎓 Certificado':''}</div>`:'';
+    g.innerHTML+=`<div class="pcard ${ft}" onclick="goPage('perfil')">${fb}<div class="pc-img">${p.icon}</div><div class="pc-body"><div class="pc-top"><div class="pc-name">${p.name}</div><div class="pc-rating"><span class="s">★</span><span class="n">${p.rating}</span><span class="c">(${p.reviews})</span></div></div><div class="pc-cat">${p.icon} ${p.cat}</div>${vb}<div class="pc-desc">${p.desc}</div><div class="pc-meta">${p.meta}</div><div class="pc-ftr"><button class="btn-ver2" onclick="event.stopPropagation();goPage('perfil')">Ver perfil</button><button class="btn-sol2" onclick="event.stopPropagation();openM('modal-sol')">Solicitar</button></div></div></div>`;
+  });
+  document.getElementById('rc').innerHTML=`Mostrando <strong>${data.length} prestadores</strong>${aC?' · '+aC:''} · Colombia`;
+}
+function applyF(){
+  const city=document.getElementById('cityF').value;
+  const rating=document.getElementById('ratingF').value;
+  let res=PROVIDERS.filter(p=>{
+    if(city&&p.city!==city)return false;
+    if(aC&&p.cat!==aC)return false;
+    if(aSC&&!p.subcats.some(s=>s.includes(aSC.replace(/🛞 /,''))))return false;
+    if(rating&&p.rating<parseFloat(rating))return false;
+    return true;
+  });
+  renderCards(res);
+}
+function onCatChange(){aC=document.getElementById('catF').value;aSC='';updateBar();renderSDD();applyF();}
+function renderSDD(){
+  const dd=document.getElementById('subcatDD');
+  if(!aC||!SUBCATS[aC]){dd.classList.remove('open');return;}
+  dd.innerHTML=SUBCATS[aC].map(s=>`<div class="sci${aSC===s?' sel':''}" onclick="selSC('${s}')">${s}</div>`).join('');
+  dd.classList.add('open');
+}
+function selSC(s){aSC=s;document.getElementById('subcatDD').classList.remove('open');updateBar();applyF();}
+function clearCat(){aC='';aSC='';document.getElementById('catF').value='';document.getElementById('subcatDD').classList.remove('open');updateBar();applyF();}
+function clearSubcat(){aSC='';updateBar();applyF();}
+function updateBar(){
+  const bar=document.getElementById('atags');
+  const ct=document.getElementById('catTag');
+  const st=document.getElementById('subcatTag');
+  if(aC){bar.classList.add('show');document.getElementById('catTagN').textContent=aC;ct.style.display='inline-flex';}
+  else{bar.classList.remove('show');ct.style.display='none';}
+  if(aSC){st.style.display='inline-flex';document.getElementById('subcatTagN').textContent=aSC;}
+  else st.style.display='none';
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.fw'))document.getElementById('subcatDD').classList.remove('open');});
+function toggleMode(m){
+  document.getElementById('btnU').className='mfb'+(m==='u'?' mu':'');
+  document.getElementById('btnS').className='mfb'+(m==='s'?' ms':'');
+}
+function goCat(c){aC=c;aSC='';if(document.getElementById('catF'))document.getElementById('catF').value=c;updateBar();goPage('buscar');setTimeout(applyF,50);}
+function swTab(btn){btn.parentElement.querySelectorAll('.sw-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+
+function goPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
+  if(p==='buscar'&&document.getElementById('rgrid').children.length===0)renderCards(PROVIDERS);
+  if(p==='home'){setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},100);}
+}
+function setNL(el){document.querySelectorAll('.nl').forEach(x=>x.classList.remove('active'));el.classList.add('active');}
+function switchAuth(t){
+  document.getElementById('auth-login').style.display=t==='login'?'block':'none';
+  document.getElementById('auth-register').style.display=t==='register'?'block':'none';
+  document.getElementById('tabL').className='auth-tab'+(t==='login'?' active':'');
+  document.getElementById('tabR').className='auth-tab'+(t==='register'?' active':'');
+}
+function selRole(r){
+  document.getElementById('rc').className='role-card'+(r==='c'?' sel':'');
+  document.getElementById('rp').className='role-card'+(r==='p'?' sel':'');
+  document.getElementById('pFields').className='pf'+(r==='p'?' show':'');
+}
+function doLogin(){toast('✅ Bienvenido de vuelta');document.getElementById('navAva').style.display='flex';goPage('buscar');}
+function doRegister(){toast('✅ ¡Bienvenido a ServiYa!');document.getElementById('navAva').style.display='flex';goPage('buscar');}
+function showAS(s,btn){
+  document.querySelectorAll('.asec').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.asb-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('as-'+s).classList.add('active');btn.classList.add('active');
+}
+function switchPT(btn,t){
+  document.querySelectorAll('.ph-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  ['info','rev','chat'].forEach(x=>{const el=document.getElementById('pt-'+x);if(el)el.style.display=x===t?'block':'none';});
+}
+function selMod(el){el.closest('.mod-opts').querySelectorAll('.mo').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');}
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function toast(msg){const t=document.getElementById('toastEl');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+
+// SCROLL REVEAL
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+// HERO ANIMATION ON LOAD
+setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},200);
+
+renderCards(PROVIDERS);
+</script>
+</body>
+</html>
