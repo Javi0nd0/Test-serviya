@@ -1331,7 +1331,37 @@ const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},200);
 
-sb.auth.getSession().then(({data:{session}})=>{
+async function ensureProfile(user){
+  try{
+    const{data}=await sb.from('profiles').select('id,role,name,category,city_id').eq('id',user.id).single();
+    if(!data){
+      const role=localStorage.getItem('serviya_pending_role')||'consumer';
+      localStorage.removeItem('serviya_pending_role');
+      await sb.from('profiles').insert({id:user.id,email:user.email,name:user.user_metadata?.full_name||user.email.split('@')[0],avatar_url:user.user_metadata?.avatar_url||null,role,country_id:1});
+      currentUserRole=role;
+      if(role==='provider'){loadDepartments('cp-dept');goPage('complete-profile');return'complete-profile';}
+    }else{
+      currentUserRole=data.role;
+      if(['admin','moderator','support'].includes(data.role)){goPage('admin');loadAdminData();return'admin';}
+      if(data.role==='provider'&&!data.category){loadDepartments('cp-dept');goPage('complete-profile');return'complete-profile';}
+    }
+    return null;
+  }catch(e){console.error(e);return null;}
+}
+
+async function goToPortal(){
+  if(!currentUser){goPage('home');return;}
+  try{
+    const{data}=await sb.from('profiles').select('role,name').eq('id',currentUser.id).single();
+    if(data){
+      currentUserRole=data.role;
+      if(['admin','moderator','support'].includes(data.role)){goPage('admin');loadAdminData();}
+      else if(data.role==='provider'){goPage('proveedor');if(data.name&&document.getElementById('provName'))document.getElementById('provName').textContent=data.name;}
+      else goPage('buscar');
+    }
+  }catch(e){if(currentUser.email===ADMIN_EMAIL){goPage('admin');loadAdminData();}else goPage('buscar');}
+}
+  sb.auth.getSession().then(({data:{session}})=>{
   if(session?.user){
     currentUser=session.user;
     updateNavForUser(session.user);
