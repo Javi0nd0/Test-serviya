@@ -468,7 +468,7 @@ footer{background:var(--slate);padding:52px 64px 32px;}
       <div class="nam-item" onclick="goToPortal()">🏠 Mi portal</div>
       <div class="nam-item" onclick="goPage('buscar')">🔍 Buscar servicios</div>
       <div class="nam-divider"></div>
-      <div class="nam-item" id="adminMenuBtn" style="display:none" onclick="goPage('admin')">⚙️ Panel Admin</div>
+      <div class="nam-item" id="adminMenuBtn" style="display:none" onclick="goPage('admin');loadAdminData()">⚙️ Panel Admin</div>
       <div class="nam-item" onclick="doLogout()" style="color:var(--red)">🚪 Cerrar sesión</div>
     </div>
   </div>
@@ -1331,6 +1331,13 @@ const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},200);
 
+sb.auth.getSession().then(({data:{session}})=>{
+  if(session?.user){
+    currentUser=session.user;
+    updateNavForUser(session.user);
+    ensureProfile(session.user);
+  }
+});
 renderCards(PROVIDERS);
 </script>
 </body>
