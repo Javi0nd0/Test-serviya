@@ -997,6 +997,7 @@ async function ensureProfile(user){
     }else{
       currentUserRole=data.role;
       if(['admin','moderator','support'].includes(data.role)){goPage('admin');loadAdminData();return'admin';}
+      if(['admin','moderator','support'].includes(data.role)){goPage('admin');loadAdminData();return'admin';}
       if(data.role==='provider'&&!data.category){loadDepartments('cp-dept');goPage('complete-profile');return'complete-profile';}
     }
     return null;
