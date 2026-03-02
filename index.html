@@ -450,3 +450,888 @@ footer{background:var(--slate);padding:52px 64px 32px;}
 </style>
 </head>
 <body>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="goPage('home')">ServiYa <div class="nav-logo-dot"></div></div>
+  <div class="nav-links">
+    <button class="nl active" onclick="goPage('home');setNL(this)">Inicio</button>
+    <button class="nl" onclick="goPage('buscar');setNL(this)">Buscar servicios</button>
+    <button class="nl" onclick="requireAuth('proveedor')">Ofrecer servicios</button>
+  </div>
+  <div class="nav-right" id="navRight">
+    <button class="btn-login" onclick="goPage('auth')">Iniciar sesión</button>
+    <button class="btn-cta-nav" onclick="goPage('auth')">Registrarse gratis</button>
+  </div>
+  <div class="nav-ava" id="navAva" onclick="toggleAvaMenu()">
+    <span id="navAvaText">?</span>
+    <div class="nav-ava-menu" id="avaMenu">
+      <div class="nam-item" onclick="goToPortal()">🏠 Mi portal</div>
+      <div class="nam-item" onclick="goPage('buscar')">🔍 Buscar servicios</div>
+      <div class="nam-divider"></div>
+      <div class="nam-item" id="adminMenuBtn" style="display:none" onclick="goPage('admin')">⚙️ Panel Admin</div>
+      <div class="nam-item" onclick="doLogout()" style="color:var(--red)">🚪 Cerrar sesión</div>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-left" id="heroL">
+      <div class="hero-tag"><span class="dot-pulse"></span>Disponibles ahora mismo</div>
+      <h1 class="hero-h1">Encuentra el<br>servicio que<br><span class="accent">necesitas hoy</span></h1>
+      <p class="hero-sub">Plomeros, electricistas, mecánicos y más — <strong>verificados, calificados</strong> y a tu alcance.</p>
+      <div class="cta-block">
+        <button class="btn-hero" onclick="goPage('buscar')">Buscar servicio →</button>
+        <button class="btn-outline" onclick="requireAuth('proveedor')">💼 Ofrecer mis servicios</button>
+      </div>
+      <div class="rating-row">
+        <div class="avatar-stack">
+          <div class="av" style="background:linear-gradient(135deg,#6366F1,#8B5CF6)">MR</div>
+          <div class="av" style="background:linear-gradient(135deg,#10B981,#059669)">AT</div>
+          <div class="av" style="background:linear-gradient(135deg,#F59E0B,#D97706)">LP</div>
+          <div class="av" style="background:linear-gradient(135deg,#EF4444,#DC2626)">SC</div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <div class="rating-text"><strong>4.86/5</strong> basado en <strong>12,430</strong> servicios</div>
+      </div>
+      <div class="trust-signals">
+        <div class="ts green">🛡️ Prestadores verificados</div>
+        <div class="ts blue">💳 Pago seguro al finalizar</div>
+        <div class="ts gray">🔒 Protección al cliente</div>
+      </div>
+    </div>
+    <div class="hero-right" id="heroR">
+      <div class="fcard fcard-1"><span style="font-size:1.2rem">⭐</span><div class="fcard-text"><strong>Carlos M. — Plomero</strong><span>4.9 · 127 servicios · Bogotá</span></div></div>
+      <div class="illus-wrap">
+        <svg class="tech-svg" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="40" width="360" height="140" rx="16" fill="white" opacity=".7"/>
+          <circle cx="90" cy="85" r="22" fill="#BFDBFE"/><rect x="68" y="108" width="44" height="55" rx="8" fill="#93C5FD"/>
+          <rect x="140" y="58" width="195" height="68" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+          <rect x="156" y="71" width="75" height="7" rx="3.5" fill="#EFF6FF"/>
+          <rect x="156" y="84" width="115" height="5" rx="2.5" fill="#F1F5F9"/>
+          <rect x="275" y="76" width="44" height="20" rx="5" fill="#059669"/>
+          <text x="297" y="90" fill="white" font-size="9" font-weight="700" text-anchor="middle" font-family="Sora">$45K</text>
+          <text x="156" y="120" fill="#F59E0B" font-size="13">★★★★★</text>
+        </svg>
+        <div class="search-widget">
+          <div class="sw-tabs">
+            <button class="sw-tab urgent active" onclick="swTab(this)">🚨 Urgente</button>
+            <button class="sw-tab" onclick="swTab(this)">📅 Programar</button>
+          </div>
+          <div class="sw-search">
+            <input type="text" class="sw-input" placeholder="¿Qué servicio necesitas?">
+            <button class="sw-btn" onclick="goPage('buscar')">Buscar</button>
+          </div>
+          <div class="sw-cats">
+            <div class="sw-cat" onclick="goCat('Plomería')">🔧 Plomería</div>
+            <div class="sw-cat" onclick="goCat('Electricidad')">⚡ Eléctrico</div>
+            <div class="sw-cat" onclick="goCat('Mecánica')">🚗 Mecánica</div>
+            <div class="sw-cat" onclick="goCat('Aseo')">🧹 Aseo</div>
+          </div>
+        </div>
+      </div>
+      <div class="fcard fcard-2"><span style="font-size:1.2rem">✅</span><div class="fcard-text"><strong>Servicio completado</strong><span>Pago liberado · Nequi</span><div class="fcard-badge">+1 Calificación</div></div></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-n">4,200+</div><div class="stat-l">Prestadores activos</div></div>
+      <div class="stat-item"><div class="stat-n">18,000+</div><div class="stat-l">Servicios prestados</div></div>
+      <div class="stat-item"><div class="stat-n">4.86 ★</div><div class="stat-l">Calificación promedio</div></div>
+      <div class="stat-item"><div class="stat-n">&lt;8 min</div><div class="stat-l">Respuesta promedio</div></div>
+      <div class="stat-item"><div class="stat-n">6 países</div><div class="stat-l">Expansión regional</div></div>
+    </div>
+  </div>
+
+  <div class="trust-sec">
+    <div class="trust-sec-inner">
+      <div class="trust-item"><div class="trust-icon-wrap ti-blue">🛡️</div><div class="trust-item-text"><strong>Validación de identidad</strong><span>Verificación automatizada</span></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon-wrap ti-green">⭐</div><div class="trust-item-text"><strong>Sistema de calificaciones</strong><span>Reputación pública transparente</span></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon-wrap ti-amber">💳</div><div class="trust-item-text"><strong>Pago al finalizar</strong><span>Sin anticipos. Por Nequi.</span></div></div>
+      <div class="trust-divider"></div>
+      <div class="trust-item"><div class="trust-icon-wrap ti-slate">🔒</div><div class="trust-item-text"><strong>Datos protegidos</strong><span>Ley 1581 de 2012 · Colombia</span></div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-header reveal">
+      <div class="sec-eye">¿Cómo funciona?</div>
+      <h2 class="sec-title">Sin sorpresas. Sin anticipos.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="step-n">PASO 01</div><div class="step-ico ico-b">🔍</div><h3>Busca y filtra</h3><p>Selecciona categoría, ciudad y disponibilidad.</p></div>
+      <div class="step reveal" style="transition-delay:.1s"><div class="step-n">PASO 02</div><div class="step-ico ico-g">💬</div><h3>Habla y acuerda</h3><p>Chat interno. El prestador diagnostica y da presupuesto exacto.</p></div>
+      <div class="step reveal" style="transition-delay:.2s"><div class="step-n">PASO 03</div><div class="step-ico ico-a">⭐</div><h3>Paga y califica</h3><p>Pago directo por Nequi al finalizar. Sin anticipos.</p></div>
+    </div>
+  </div>
+
+  <div class="cats-sec">
+    <div class="cats-inner">
+      <div class="sec-eye">Categorías</div>
+      <h2 class="sec-title">Todo lo que necesitas</h2>
+      <div class="cats-grid">
+        <div class="cat-p" onclick="goCat('Plomería')"><span class="ci">🔧</span><div class="cn">Plomería</div><div class="cc">142</div></div>
+        <div class="cat-p" onclick="goCat('Electricidad')"><span class="ci">⚡</span><div class="cn">Electricidad</div><div class="cc">98</div></div>
+        <div class="cat-p" onclick="goCat('Mecánica')"><span class="ci">🚗</span><div class="cn">Mecánica</div><div class="cc">115</div></div>
+        <div class="cat-p" onclick="goCat('Carpintería')"><span class="ci">🪵</span><div class="cn">Carpintería</div><div class="cc">67</div></div>
+        <div class="cat-p" onclick="goCat('Aseo')"><span class="ci">🧹</span><div class="cn">Aseo</div><div class="cc">203</div></div>
+        <div class="cat-p" onclick="goCat('Belleza')"><span class="ci">💅</span><div class="cn">Belleza</div><div class="cc">178</div></div>
+        <div class="cat-p" onclick="goCat('Tecnología')"><span class="ci">💻</span><div class="cn">Tecnología</div><div class="cc">89</div></div>
+        <div class="cat-p" onclick="goCat('Mascotas')"><span class="ci">🐕</span><div class="cn">Mascotas</div><div class="cc">44</div></div>
+        <div class="cat-p" onclick="goCat('Mudanzas')"><span class="ci">📦</span><div class="cn">Mudanzas</div><div class="cc">37</div></div>
+        <div class="cat-p" onclick="goCat('Clases')"><span class="ci">🎓</span><div class="cn">Clases</div><div class="cc">122</div></div>
+        <div class="cat-p" onclick="goCat('Cerrajería')"><span class="ci">🔑</span><div class="cn">Cerrajería</div><div class="cc">55</div></div>
+        <div class="cat-p" onclick="goCat('Pintura')"><span class="ci">🖌️</span><div class="cn">Pintura</div><div class="cc">76</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="test-sec">
+    <div class="test-sec-inner">
+      <div class="sec-eye reveal">Testimonios</div>
+      <h2 class="sec-title reveal">Confianza construida servicio a servicio</h2>
+      <div class="test-grid">
+        <div class="test-card reveal"><div class="test-stars">★★★★★</div><p class="test-text">"Carlos llegó en 20 minutos, diagnóstico honesto y precio exacto."</p><div class="test-author"><div class="test-ava" style="background:linear-gradient(135deg,#6366F1,#8B5CF6)">PV</div><div class="test-info"><strong>Patricia Vargas</strong><span>Bogotá · Plomería</span><div class="test-tag">✓ Servicio verificado</div></div></div></div>
+        <div class="test-card reveal" style="transition-delay:.1s"><div class="test-stars">★★★★★</div><p class="test-text">"Por fin una app donde puedo ver el historial antes de dejar entrar a alguien a mi casa."</p><div class="test-author"><div class="test-ava" style="background:linear-gradient(135deg,#10B981,#059669)">HR</div><div class="test-info"><strong>Hernando Ruiz</strong><span>Medellín · Electricidad</span><div class="test-tag">✓ Servicio verificado</div></div></div></div>
+        <div class="test-card reveal" style="transition-delay:.2s"><div class="test-stars">★★★★★</div><p class="test-text">"ServiYa me dio visibilidad que nunca pude conseguir por mi cuenta."</p><div class="test-author"><div class="test-ava" style="background:linear-gradient(135deg,#F59E0B,#D97706)">CM</div><div class="test-info"><strong>Carlos Mendoza</strong><span>Bogotá · Prestador</span><div class="test-tag" style="background:var(--blue-light);color:var(--blue-mid)">💼 Prestador</div></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div><div class="footer-logo">ServiYa ·</div><p class="footer-desc">Conectamos personas con prestadores verificados en Latinoamérica.</p></div>
+        <div><div class="footer-col-title">Consumidores</div><a class="footer-link" onclick="goPage('buscar')">Buscar servicios</a><a class="footer-link">Soporte</a></div>
+        <div><div class="footer-col-title">Prestadores</div><a class="footer-link" onclick="requireAuth('proveedor')">Registrarse</a></div>
+        <div><div class="footer-col-title">Legal</div><a class="footer-link">Términos de uso</a><a class="footer-link">Política de datos</a></div>
+      </div>
+      <div class="footer-bottom"><span class="footer-copy">© 2025 ServiYa SAS · Bogotá, Colombia</span><span class="footer-copy">🔒 Ley 1581 de 2012</span></div>
+    </div>
+  </footer>
+</div>
+
+<!-- BUSCAR -->
+<div id="page-buscar" class="page">
+  <div class="buscar-top">
+    <div class="bt-inner">
+      <h1>Servicios disponibles</h1>
+      <div class="filtros">
+        <div class="mode-btns"><button class="mfb mu" id="btnU" onclick="toggleMode('u')">🚨 Urgente</button><button class="mfb" id="btnS" onclick="toggleMode('s')">📅 Programado</button></div>
+        <div class="fw"><select class="fsel" id="deptF" onchange="loadCities('deptF','cityF');applyF()"><option value="">🗺️ Departamento</option></select><span class="fa">▾</span></div>
+        <div class="fw"><select class="fsel" id="cityF" onchange="applyF()" disabled><option value="">📍 Ciudad</option></select><span class="fa">▾</span></div>
+        <div class="fw" style="position:relative"><select class="fsel" id="catF" onchange="onCatChange()"><option value="">Todas las categorías</option><option>Plomería</option><option>Electricidad</option><option>Mecánica</option><option>Carpintería</option><option>Aseo</option><option>Belleza</option><option>Tecnología</option><option>Mascotas</option><option>Mudanzas</option><option>Clases</option><option>Cerrajería</option><option>Pintura</option></select><span class="fa">▾</span><div class="scdd" id="subcatDD"></div></div>
+        <div class="fw"><select class="fsel" id="ratingF" onchange="applyF()"><option value="">⭐ Calificación</option><option value="5">★★★★★ Solo 5</option><option value="4">★★★★+ 4+</option><option value="3">★★★+ 3+</option></select><span class="fa">▾</span></div>
+      </div>
+      <div class="active-tags" id="atags"><div class="atag" id="catTag"><span id="catTagN"></span><button onclick="clearCat()">×</button></div><div class="atag" id="subcatTag" style="display:none"><span id="subcatTagN"></span><button onclick="clearSubcat()">×</button></div></div>
+      <div class="rc" id="rc">Cargando...</div>
+    </div>
+  </div>
+  <div class="bb"><div class="rgrid" id="rgrid"></div></div>
+</div>
+
+<!-- PERFIL -->
+<div id="page-perfil" class="page">
+  <div class="ph"><div class="ph-inner">
+    <div class="ph-row">
+      <div class="ph-ava">🔧</div>
+      <div class="ph-meta">
+        <div class="ph-name">Carlos Mendoza</div>
+        <div class="ph-badges"><span class="pbg pbg-v">✓ Verificado</span><span class="pbg pbg-f">⭐ Destacado</span></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;"><div class="stars">★★★★★</div><span style="font-size:.8rem;color:var(--gray)">4.9 · 127 calificaciones</span></div>
+        <div class="ph-cats-row"><span class="pct">🔧 Plomería</span><span class="pct">🚿 Duchas</span></div>
+      </div>
+    </div>
+    <div class="ph-tabs">
+      <button class="ph-tab active" onclick="switchPT(this,'info')">Información</button>
+      <button class="ph-tab" onclick="switchPT(this,'rev')">Calificaciones</button>
+      <button class="ph-tab" onclick="switchPT(this,'chat')">Chat</button>
+    </div>
+  </div></div>
+  <div class="pb">
+    <div>
+      <div id="pt-info">
+        <div class="psec"><h3>Sobre mí</h3><p style="color:var(--gray);line-height:1.75;font-size:.83rem">Plomero con 12 años de experiencia. Diagnóstico gratis, presupuesto antes de empezar.</p></div>
+        <div class="psec"><h3>¿Cómo funciona el cobro?</h3><div class="pay-steps">
+          <div class="psi"><div class="ps-num">1</div><div class="ps-con"><h4>Solicitas el servicio</h4><p>Describes el problema por chat.</p></div></div>
+          <div class="psi"><div class="ps-num">2</div><div class="ps-con"><h4>Diagnóstico gratuito</h4><p>Reviso sin costo y envío presupuesto exacto.</p></div></div>
+          <div class="psi"><div class="ps-num">3</div><div class="ps-con"><h4>Apruebas el presupuesto</h4><p>Solo cuando aceptas el valor, empezamos.</p></div></div>
+          <div class="psi"><div class="ps-num">4</div><div class="ps-con"><h4>Pagas al finalizar por Nequi</h4><p>Sin anticipos. Directo a mi Nequi.</p></div></div>
+        </div></div>
+      </div>
+      <div id="pt-rev" style="display:none"><div class="psec"><h3>Calificaciones</h3>
+        <div class="rev"><div class="rv-top"><div class="rv-n">Patricia V.</div><div class="rv-d">hace 2 días</div></div><div class="rv-s">★★★★★</div><div class="rv-t">Excelente servicio.</div></div>
+      </div></div>
+      <div id="pt-chat" style="display:none"><div class="psec"><h3>Chat</h3>
+        <div class="chat-area" id="chatArea">
+          <div class="cmsg other"><div class="cbub">Hola, ¿en qué te puedo ayudar?</div><div class="ct">10:32 am</div></div>
+        </div>
+        <div class="chat-inp"><input type="text" id="chatInput" placeholder="Escribe tu mensaje..." onkeypress="if(event.key==='Enter')sendMsg()"><button class="chat-snd" onclick="sendMsg()">Enviar</button></div>
+      </div></div>
+    </div>
+    <div>
+      <div class="sc">
+        <div class="price-from">Desde</div><div class="price-val">$45.000</div><div class="price-sub">COP · precio final según diagnóstico</div>
+        <div class="mod-opts"><div class="mo sel" onclick="selMod(this)"><span class="mi">🚨</span><div class="ml">Urgente</div></div><div class="mo" onclick="selMod(this)"><span class="mi">📅</span><div class="ml">Programar</div></div></div>
+        <div class="avail-row"><span class="dg"></span>Disponible ahora</div>
+        <button class="btn-main" onclick="requireAuth('solicitar')">Solicitar servicio</button>
+        <div class="sc-note">Pago al finalizar · Sin anticipos</div>
+        <div class="sc-guarantee">🛡️ Servicio garantizado por ServiYa</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div id="page-auth" class="page">
+  <div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:28px 20px;">
+    <div class="auth-w">
+      <div class="auth-l">
+        <div class="auth-l-logo">ServiYa ·</div>
+        <div>
+          <h2>Confianza en cada servicio</h2>
+          <p>Miles de colombianos conectan con prestadores verificados a través de ServiYa.</p>
+          <div class="auth-perks">
+            <div class="auth-perk"><span class="pi">🛡️</span>Prestadores verificados</div>
+            <div class="auth-perk"><span class="pi">💳</span>Pago al finalizar, sin anticipos</div>
+            <div class="auth-perk"><span class="pi">⭐</span>Sistema de calificaciones</div>
+            <div class="auth-perk"><span class="pi">🔒</span>Datos protegidos · Ley 1581</div>
+          </div>
+        </div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.22);">🇨🇴 Colombia · Ecuador · Perú · México</div>
+      </div>
+      <div class="auth-r" style="display:flex;flex-direction:column;justify-content:center;">
+        <div id="auth-role-select">
+          <div style="text-align:center;margin-bottom:24px;">
+            <div style="font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:800;color:var(--slate);margin-bottom:4px;">¿Cómo quieres entrar?</div>
+            <div style="font-size:.78rem;color:var(--gray);">Elige tu rol para continuar con Google</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+            <div class="role-card" id="authRoleC" onclick="selectAuthRole('consumer')" style="padding:18px;cursor:pointer;">
+              <span class="ri" style="font-size:1.8rem;display:block;margin-bottom:8px;">🛒</span>
+              <div class="rn" style="font-size:.88rem;">Soy Cliente</div>
+              <div class="rs" style="font-size:.72rem;margin-top:4px;">Busco servicios</div>
+            </div>
+            <div class="role-card" id="authRoleP" onclick="selectAuthRole('provider')" style="padding:18px;cursor:pointer;">
+              <span class="ri" style="font-size:1.8rem;display:block;margin-bottom:8px;">💼</span>
+              <div class="rn" style="font-size:.88rem;">Soy Prestador</div>
+              <div class="rs" style="font-size:.72rem;margin-top:4px;">Ofrezco servicios</div>
+            </div>
+          </div>
+          <button class="btn-google" id="btnGoogleAuth" onclick="loginWithGoogle()" disabled style="opacity:.5;cursor:not-allowed;">
+            <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+            Continuar con Google
+          </button>
+          <div style="text-align:center;margin-top:12px;font-size:.72rem;color:var(--gray2);">🔒 No almacenamos tu contraseña.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPLETAR PERFIL -->
+<div id="page-complete-profile" class="page">
+  <div class="cp-wrap">
+    <div class="cp-header">
+      <div class="cp-step-badge">✨ Último paso</div>
+      <h1 class="cp-title">Completa tu perfil</h1>
+      <p class="cp-sub">Tu perfil es tu carta de presentación. Cuanto más completo, más clientes conseguirás.</p>
+    </div>
+    <div class="cp-progress">
+      <div class="cpp-dot active" id="cpd1"></div>
+      <div class="cpp-dot" id="cpd2"></div>
+      <div class="cpp-dot" id="cpd3"></div>
+    </div>
+    <div id="cp-step-1" class="cp-card">
+      <h3>📸 Fotos de tu perfil</h3>
+      <div class="upload-grid">
+        <div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--gray);margin-bottom:6px;text-transform:uppercase;">Foto de perfil</div>
+          <div class="upload-area" id="ua-avatar" onclick="document.getElementById('inp-avatar').click()">
+            <input type="file" id="inp-avatar" accept="image/*" style="display:none" onchange="previewImg(this,'prev-avatar','ua-avatar','circle')">
+            <img id="prev-avatar" class="upload-preview" src="" alt="">
+            <div class="upload-icon" id="uai-avatar">🤳</div>
+            <div class="upload-title">Tu foto</div>
+            <div class="upload-sub">JPG o PNG · máx 3MB</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--gray);margin-bottom:6px;text-transform:uppercase;">Foto de portada</div>
+          <div class="upload-area" id="ua-cover" onclick="document.getElementById('inp-cover').click()">
+            <input type="file" id="inp-cover" accept="image/*" style="display:none" onchange="previewImg(this,'prev-cover','ua-cover','cover')">
+            <img id="prev-cover" class="upload-preview-cover" src="" alt="">
+            <div class="upload-icon" id="uai-cover">🖼️</div>
+            <div class="upload-title">Portada</div>
+            <div class="upload-sub">Tu mejor trabajo · 16:9</div>
+          </div>
+        </div>
+      </div>
+      <button class="cp-btn" onclick="cpNext(1)" style="margin-top:16px;">Continuar →</button>
+    </div>
+    <div id="cp-step-2" class="cp-card" style="display:none">
+      <h3>🔧 ¿Qué servicios ofreces?</h3>
+      <div class="cat-btn-grid">
+        <div class="cat-btn" onclick="selectCPCat(this,'Plomería')"><span class="cbi">🔧</span><span class="cbn">Plomería</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Electricidad')"><span class="cbi">⚡</span><span class="cbn">Electricidad</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Mecánica')"><span class="cbi">🚗</span><span class="cbn">Mecánica</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Aseo')"><span class="cbi">🧹</span><span class="cbn">Aseo</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Belleza')"><span class="cbi">💅</span><span class="cbn">Belleza</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Tecnología')"><span class="cbi">💻</span><span class="cbn">Tecnología</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Carpintería')"><span class="cbi">🪵</span><span class="cbn">Carpintería</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Mascotas')"><span class="cbi">🐕</span><span class="cbn">Mascotas</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Cerrajería')"><span class="cbi">🔑</span><span class="cbn">Cerrajería</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Pintura')"><span class="cbi">🖌️</span><span class="cbn">Pintura</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Mudanzas')"><span class="cbi">📦</span><span class="cbn">Mudanzas</span></div>
+        <div class="cat-btn" onclick="selectCPCat(this,'Clases')"><span class="cbi">🎓</span><span class="cbn">Clases</span></div>
+      </div>
+      <div id="cp-subcat-wrap" style="display:none">
+        <div style="font-size:.72rem;font-weight:700;color:var(--gray);margin:12px 0 7px;text-transform:uppercase;">Subcategorías</div>
+        <div class="subcat-wrap" id="cp-subcat-chips"></div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="font-size:.72rem;font-weight:700;color:var(--gray);margin-bottom:6px;text-transform:uppercase;">Descripción</div>
+        <textarea class="fi" id="cp-desc" rows="3" style="resize:none;" placeholder="Ej: Plomero con 12 años de experiencia..."></textarea>
+      </div>
+      <button class="cp-btn" id="cp-btn-2" onclick="cpNext(2)" disabled style="margin-top:12px;opacity:.5;cursor:not-allowed;">Continuar →</button>
+    </div>
+    <div id="cp-step-3" class="cp-card" style="display:none">
+      <h3>📍 ¿Dónde trabajas?</h3>
+      <div class="fg"><label>Departamento</label><select class="fi" id="cp-dept" onchange="loadCities('cp-dept','cp-city')"><option value="">Selecciona departamento...</option></select></div>
+      <div class="fg"><label>Ciudad / Municipio</label><select class="fi" id="cp-city" disabled><option value="">Primero selecciona departamento</option></select></div>
+      <div style="background:var(--blue-xlight);border:1px solid #BFDBFE;border-radius:10px;padding:13px;margin:14px 0;font-size:.76rem;color:var(--slate);line-height:1.7;">
+        ⚠️ <strong>Aviso:</strong> ServiYa no procesa pagos. Los pagos son directamente entre cliente y prestador.
+      </div>
+      <div class="fchk" style="margin-bottom:8px;"><input type="checkbox" id="cp-terms"><label for="cp-terms">Acepto los <a href="#" style="color:var(--blue-mid)">Términos de uso</a> y <a href="#" style="color:var(--blue-mid)">Política de privacidad</a> (Ley 1581)</label></div>
+      <div class="fchk"><input type="checkbox" id="cp-payment"><label for="cp-payment">Entiendo que los pagos son acuerdos directos entre las partes</label></div>
+      <button class="cp-btn" id="cp-btn-3" onclick="saveProviderProfile()" style="margin-top:14px;">🚀 Publicar mi perfil</button>
+    </div>
+  </div>
+</div>
+<!-- PORTAL PROVEEDOR -->
+<div id="page-proveedor" class="page">
+  <div class="prov-hero">
+    <div class="prov-hero-inner">
+      <div>
+        <div class="prov-welcome">Bienvenido de vuelta</div>
+        <div class="prov-name" id="provName">Cargando...</div>
+        <div class="prov-status">Estado: <div class="status-toggle"><button class="st-btn on" onclick="setStatus('on',this)">🟢 Disponible</button><button class="st-btn" onclick="setStatus('off',this)">🔴 No disponible</button></div></div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-bottom:4px;">Calificación actual</div>
+        <div style="font-family:'Sora',sans-serif;font-size:2rem;font-weight:900;color:#fff;">4.9 ★</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.4);">127 calificaciones</div>
+      </div>
+    </div>
+  </div>
+  <div class="prov-kpis">
+    <div class="pkpi"><div class="pkpi-ico">💰</div><div class="pkpi-val">$1.8M</div><div class="pkpi-lbl">Ingresos este mes</div><div class="pkpi-trend trend-up">↑ +23%</div></div>
+    <div class="pkpi"><div class="pkpi-ico">✅</div><div class="pkpi-val">47</div><div class="pkpi-lbl">Servicios completados</div><div class="pkpi-trend trend-up">↑ +8 este mes</div></div>
+    <div class="pkpi"><div class="pkpi-ico">⏳</div><div class="pkpi-val">3</div><div class="pkpi-lbl">Solicitudes pendientes</div><div class="pkpi-trend" style="color:var(--amber)">Requieren respuesta</div></div>
+    <div class="pkpi"><div class="pkpi-ico">⚡</div><div class="pkpi-val">8 min</div><div class="pkpi-lbl">Tiempo respuesta</div><div class="pkpi-trend trend-up">↑ Mejor que promedio</div></div>
+    <div class="pkpi"><div class="pkpi-ico">👁️</div><div class="pkpi-val">284</div><div class="pkpi-lbl">Visitas al perfil</div><div class="pkpi-trend trend-up">↑ Esta semana</div></div>
+    <div class="pkpi"><div class="pkpi-ico">🔄</div><div class="pkpi-val">68%</div><div class="pkpi-lbl">Tasa de conversión</div><div class="pkpi-trend trend-up">Visitas → Solicitudes</div></div>
+  </div>
+  <div class="prov-body">
+    <div>
+      <div class="prov-sec"><h3>Solicitudes recientes</h3>
+        <div class="req-list">
+          <div class="req-item"><div class="req-ico req-ico-u">🚨</div><div class="req-info"><div class="req-name">Patricia Vargas</div><div class="req-det">Fuga de agua · Bogotá</div></div><div class="req-meta"><div class="req-time">Hace 5 min</div><div class="req-price">~$80.000</div><div class="req-badge rb-u">Urgente</div></div></div>
+          <div class="req-item"><div class="req-ico req-ico-p">📅</div><div class="req-info"><div class="req-name">Mario Ramírez</div><div class="req-det">Cambio de grifo · Bogotá</div></div><div class="req-meta"><div class="req-time">Hace 2h</div><div class="req-price">~$45.000</div><div class="req-badge rb-p">Programado</div></div></div>
+          <div class="req-item"><div class="req-ico req-ico-c">✅</div><div class="req-info"><div class="req-name">Sandra Pérez</div><div class="req-det">Calentador · Bogotá</div></div><div class="req-meta"><div class="req-time">Ayer</div><div class="req-price">$180.000</div><div class="req-badge rb-c">Completado</div></div></div>
+        </div>
+      </div>
+      <div class="prov-sec"><h3>Ingresos por semana</h3>
+        <div class="chart-bar-wrap">
+          <div class="chart-bar-row"><div class="chart-bar-lbl">S1</div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:55%"></div></div><div class="chart-bar-val">$420K</div></div>
+          <div class="chart-bar-row"><div class="chart-bar-lbl">S2</div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:72%"></div></div><div class="chart-bar-val">$550K</div></div>
+          <div class="chart-bar-row"><div class="chart-bar-lbl">S3</div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:48%"></div></div><div class="chart-bar-val">$370K</div></div>
+          <div class="chart-bar-row"><div class="chart-bar-lbl">S4</div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:60%"></div></div><div class="chart-bar-val">$460K</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="prov-side-card"><h4>Mi calificación</h4>
+        <div class="rating-big"><div class="rb-num">4.9</div><div class="rb-stars">★★★★★</div><div class="rb-count">127 calificaciones</div></div>
+        <div class="rating-dist">
+          <div class="rd-row"><div class="rd-lbl">5★</div><div class="rd-bar"><div class="rd-fill" style="width:88%"></div></div><div class="rd-n">112</div></div>
+          <div class="rd-row"><div class="rd-lbl">4★</div><div class="rd-bar"><div class="rd-fill" style="width:9%"></div></div><div class="rd-n">11</div></div>
+          <div class="rd-row"><div class="rd-lbl">3★</div><div class="rd-bar"><div class="rd-fill" style="width:2%"></div></div><div class="rd-n">3</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="page-admin" class="page">
+  <div class="admin-topbar">
+    <div class="admin-topbar-left">
+      <div class="admin-role-badge">⚡ Panel Administrador</div>
+      <div class="admin-page-title">ServiYa Control Center</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="admin-live"><span class="admin-live-dot"></span>En vivo · <span id="adminClock"></span></div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.28);">jareypee@gmail.com</div>
+    </div>
+  </div>
+  <div class="admin-kpi-strip">
+    <div class="akpi"><div class="akpi-icon">👥</div><div class="akpi-val" id="ak-total">—</div><div class="akpi-lbl">Total usuarios</div><div class="akpi-trend at-up" id="ak-total-t">Cargando...</div></div>
+    <div class="akpi"><div class="akpi-icon">💼</div><div class="akpi-val" id="ak-prov">—</div><div class="akpi-lbl">Prestadores</div><div class="akpi-trend at-up" id="ak-prov-t">Registrados</div></div>
+    <div class="akpi"><div class="akpi-icon">🛒</div><div class="akpi-val" id="ak-cons">—</div><div class="akpi-lbl">Consumidores</div><div class="akpi-trend at-up" id="ak-cons-t">Registrados</div></div>
+    <div class="akpi"><div class="akpi-icon">📅</div><div class="akpi-val" id="ak-hoy">—</div><div class="akpi-lbl">Nuevos hoy</div><div class="akpi-trend at-warn">Registros del día</div></div>
+    <div class="akpi"><div class="akpi-icon">⭐</div><div class="akpi-val">4.86</div><div class="akpi-lbl">Rating plataforma</div><div class="akpi-trend at-up">↑ Promedio global</div></div>
+    <div class="akpi"><div class="akpi-icon">🌎</div><div class="akpi-val">6</div><div class="akpi-lbl">Países activos</div><div class="akpi-trend at-up">🇨🇴🇪🇨🇵🇪🇲🇽</div></div>
+  </div>
+  <div class="admin-body">
+    <div class="admin-sidebar">
+      <div class="asb-group">
+        <div class="asb-group-lbl">Principal</div>
+        <button class="asb-item active" onclick="showAS('dashboard',this)">📊 Dashboard</button>
+        <button class="asb-item" onclick="showAS('usuarios',this)">👤 Usuarios</button>
+        <button class="asb-item" onclick="showAS('prestadores',this)">💼 Prestadores</button>
+      </div>
+      <div class="asb-group">
+        <div class="asb-group-lbl">Plataforma</div>
+        <button class="asb-item" onclick="showAS('disputas',this)">⚠️ Disputas</button>
+        <button class="asb-item" onclick="showAS('auditlog',this);loadAdminData()">📋 Audit Log</button>
+      </div>
+    </div>
+    <div class="admin-main">
+      <div class="asec active" id="as-dashboard">
+        <div class="asec-title">Dashboard</div>
+        <div class="asec-sub">Métricas en tiempo real desde Supabase</div>
+        <div class="kpis">
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Prestadores</span><div class="kpi-ico" style="background:rgba(37,99,235,.15)">💼</div></div><div class="kpi-num" id="kpi-prest">—</div></div>
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Consumidores</span><div class="kpi-ico" style="background:rgba(5,150,105,.15)">🛒</div></div><div class="kpi-num" id="kpi-cons">—</div></div>
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Total</span><div class="kpi-ico" style="background:rgba(217,119,6,.15)">👥</div></div><div class="kpi-num" id="kpi-total">—</div></div>
+          <div class="kpi"><div class="kpi-top"><span class="kpi-lbl">Hoy</span><div class="kpi-ico" style="background:rgba(255,255,255,.06)">📅</div></div><div class="kpi-num" id="kpi-hoy">—</div></div>
+        </div>
+        <div style="font-size:.8rem;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:10px;">Últimos registros</div>
+        <table class="dt">
+          <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Registro</th><th>Auth</th></tr></thead>
+          <tbody id="admin-users-table"><tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,.25);padding:20px;">Cargando...</td></tr></tbody>
+        </table>
+      </div>
+      <div class="asec" id="as-usuarios">
+        <div class="asec-title">Todos los usuarios</div>
+        <div class="asec-sub">Datos reales desde Supabase</div>
+        <table class="dt">
+          <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Ciudad</th><th>Registro</th></tr></thead>
+          <tbody id="admin-all-users"><tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,.25);padding:20px;">Cargando...</td></tr></tbody>
+        </table>
+      </div>
+      <div class="asec" id="as-prestadores">
+        <div class="asec-title">Prestadores</div>
+        <div class="asec-sub">Gestión y aprobación</div>
+        <table class="dt"><thead><tr><th>Nombre</th><th>Categoría</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>
+          <tr><td><strong style="color:#fff">Carlos Mendoza</strong></td><td>🔧 Plomería</td><td><span class="spill sa">Activo</span></td><td><button class="tbtn tbe">Destacar</button><button class="tbtn tbr">Suspender</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="asec" id="as-disputas">
+        <div class="asec-title">Disputas</div>
+        <div class="asec-sub">Conflictos entre usuarios</div>
+        <table class="dt"><thead><tr><th>ID</th><th>Consumidor</th><th>Prestador</th><th>Motivo</th><th>Acción</th></tr></thead><tbody>
+          <tr><td><strong style="color:#fff">#D-001</strong></td><td>Hernando M.</td><td>José García</td><td>Trabajo incompleto</td><td><button class="tbtn tba" onclick="toast('En revisión')">Revisar</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="asec" id="as-auditlog">
+        <div class="asec-title">Audit Log</div>
+        <div class="asec-sub">Registro automático de eventos críticos</div>
+        <table class="dt">
+          <thead><tr><th>Evento</th><th>Descripción</th><th>Fecha / Hora</th></tr></thead>
+          <tbody id="admin-audit-table"><tr><td colspan="3" style="text-align:center;color:rgba(255,255,255,.25);padding:20px;">Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="modal-sol">
+  <div class="modal">
+    <h3>Solicitar servicio</h3>
+    <div class="ms">Tu solicitud va directamente al prestador.</div>
+    <div class="fg"><label>¿Qué necesitas?</label><textarea class="fi" rows="3" placeholder="Describe el problema..."></textarea></div>
+    <div class="fg"><label>¿Cuándo?</label><select class="fi"><option>🚨 Ahora mismo</option><option>📅 Hoy más tarde</option><option>📆 Mañana</option></select></div>
+    <div class="fg"><label>Dirección</label><input type="text" class="fi" placeholder="Calle 123 # 45-67, Bogotá"></div>
+    <div class="modal-ftr">
+      <button class="btn-cancel" onclick="closeM('modal-sol')">Cancelar</button>
+      <button class="btn-confirm" onclick="closeM('modal-sol');toast('✅ Solicitud enviada')">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"></div>
+<script>
+const SUPABASE_URL='https://mkppuetkianusptyoiwc.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rcHB1ZXRraWFudXNwdHlvaXdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyOTE4OTMsImV4cCI6MjA4Nzg2Nzg5M30.IkZf3FVFqUbTaqjZ6LPUxlnnAxIuYSXYNetl5hU18q4';
+const{createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY);
+const ADMIN_EMAIL='jareypee@gmail.com';
+let currentUser=null,currentUserRole=null,afterAuthDest=null;
+
+sb.auth.onAuthStateChange(async(event,session)=>{
+  if(session?.user){
+    currentUser=session.user;
+    updateNavForUser(session.user);
+    const dest=await ensureProfile(session.user);
+    if(dest==='complete-profile')return;
+    if(afterAuthDest){const d=afterAuthDest;afterAuthDest=null;goPage(d);}
+    else if(document.getElementById('page-auth').classList.contains('active'))goToPortal();
+  }else{currentUser=null;updateNavForGuest();}
+});
+
+async function ensureProfile(user){
+  try{
+    const{data}=await sb.from('profiles').select('id,role,name,category,city_id').eq('id',user.id).single();
+    if(!data){
+      const role=localStorage.getItem('serviya_pending_role')||'consumer';
+      localStorage.removeItem('serviya_pending_role');
+      await sb.from('profiles').insert({id:user.id,email:user.email,name:user.user_metadata?.full_name||user.email.split('@')[0],avatar_url:user.user_metadata?.avatar_url||null,role,country_id:1});
+      currentUserRole=role;
+      if(role==='provider'){loadDepartments('cp-dept');goPage('complete-profile');return'complete-profile';}
+    }else{
+      currentUserRole=data.role;
+      if(data.role==='provider'&&!data.category){loadDepartments('cp-dept');goPage('complete-profile');return'complete-profile';}
+    }
+    return null;
+  }catch(e){console.error(e);return null;}
+}
+
+function updateNavForUser(user){
+  document.getElementById('navRight').style.display='none';
+  const ava=document.getElementById('navAva');ava.style.display='flex';
+  const initials=(user.user_metadata?.full_name||user.email||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('navAvaText').textContent=initials;
+  if(user.email===ADMIN_EMAIL)document.getElementById('adminMenuBtn').style.display='flex';
+  if(document.getElementById('provName'))document.getElementById('provName').textContent=user.user_metadata?.full_name||user.email;
+}
+
+function updateNavForGuest(){
+  document.getElementById('navRight').style.display='flex';
+  document.getElementById('navAva').style.display='none';
+  document.getElementById('avaMenu').classList.remove('open');
+}
+
+function toggleAvaMenu(){document.getElementById('avaMenu').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.nav-ava'))document.getElementById('avaMenu').classList.remove('open');});
+
+let selectedAuthRole=null;
+function selectAuthRole(role){
+  selectedAuthRole=role;
+  document.getElementById('authRoleC').classList.toggle('sel',role==='consumer');
+  document.getElementById('authRoleP').classList.toggle('sel',role==='provider');
+  const btn=document.getElementById('btnGoogleAuth');
+  btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';
+}
+
+async function loginWithGoogle(){
+  if(!selectedAuthRole){toast('⚠️ Selecciona si eres cliente o prestador');return;}
+  localStorage.setItem('serviya_pending_role',selectedAuthRole);
+  const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
+  if(error)toast('❌ '+error.message);
+}
+
+async function doLogout(){await sb.auth.signOut();toast('👋 Sesión cerrada');goPage('home');}
+
+function requireAuth(dest){
+  if(currentUser){goPage(dest);}
+  else{afterAuthDest=dest;goPage('auth');toast('Inicia sesión para continuar');}
+}
+
+async function goToPortal(){
+  if(!currentUser){goPage('home');return;}
+  try{
+    const{data}=await sb.from('profiles').select('role,name').eq('id',currentUser.id).single();
+    if(data){
+      currentUserRole=data.role;
+      if(['admin','moderator','support'].includes(data.role)){goPage('admin');loadAdminData();}
+      else if(data.role==='provider'){goPage('proveedor');if(data.name&&document.getElementById('provName'))document.getElementById('provName').textContent=data.name;}
+      else goPage('buscar');
+    }
+  }catch(e){if(currentUser.email===ADMIN_EMAIL){goPage('admin');loadAdminData();}else goPage('buscar');}
+}
+
+async function loadDepartments(selectId){
+  try{
+    const{data}=await sb.from('departments').select('id,name').order('name');
+    if(!data)return;
+    const sel=document.getElementById(selectId);if(!sel)return;
+    sel.innerHTML='<option value="">Selecciona departamento...</option>';
+    data.forEach(d=>{const o=document.createElement('option');o.value=d.id;o.textContent=d.name;sel.appendChild(o);});
+  }catch(e){console.error(e);}
+}
+
+async function loadCities(deptId,cityId){
+  const ds=document.getElementById(deptId),cs=document.getElementById(cityId);
+  if(!ds||!cs)return;
+  const v=ds.value;
+  if(!v){cs.innerHTML='<option value="">Primero selecciona departamento</option>';cs.disabled=true;return;}
+  cs.innerHTML='<option value="">Cargando...</option>';cs.disabled=true;
+  try{
+    const{data}=await sb.from('cities').select('id,name').eq('department_id',v).order('name');
+    cs.innerHTML='<option value="">Selecciona ciudad...</option>';
+    data.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;cs.appendChild(o);});
+    cs.disabled=false;
+    if(cityId==='cityF')applyF();
+  }catch(e){cs.innerHTML='<option value="">Error</option>';}
+}
+
+window.addEventListener('load',()=>{loadDepartments('deptF');});
+
+async function loadAdminData(){
+  try{
+    const{data:profiles}=await sb.from('profiles').select('*').order('created_at',{ascending:false});
+    const consumers=profiles?.filter(p=>p.role==='consumer')||[];
+    const providers=profiles?.filter(p=>p.role==='provider')||[];
+    const today=new Date().toISOString().split('T')[0];
+    const newToday=profiles?.filter(p=>p.created_at?.startsWith(today))||[];
+    ['kpi-prest','ak-prov'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).textContent=providers.length;});
+    ['kpi-cons','ak-cons'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).textContent=consumers.length;});
+    ['kpi-total','ak-total'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).textContent=profiles?.length||0;});
+    ['kpi-hoy','ak-hoy'].forEach(id=>{if(document.getElementById(id))document.getElementById(id).textContent=newToday.length;});
+    const tbody=document.getElementById('admin-users-table');
+    if(tbody){
+      if(!profiles?.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,.25);padding:20px;">Sin usuarios aún</td></tr>';}
+      else{tbody.innerHTML=profiles.map(p=>{
+        const date=p.created_at?new Date(p.created_at).toLocaleDateString('es-CO'):'—';
+        const badge=p.role==='provider'?'<span class="spill sf">💼 Prestador</span>':p.role==='admin'?'<span class="spill sr">⚡ Admin</span>':'<span class="spill sa">🛒 Consumidor</span>';
+        return`<tr><td><strong style="color:#fff">${p.name||'—'}</strong></td><td>${p.email||'—'}</td><td>${badge}</td><td>${date}</td><td>Supabase</td></tr>`;
+      }).join('');}
+    }
+    const allTbody=document.getElementById('admin-all-users');
+    if(allTbody&&profiles?.length){
+      allTbody.innerHTML=profiles.map(p=>{
+        const date=p.created_at?new Date(p.created_at).toLocaleDateString('es-CO'):'—';
+        const badge=p.role==='provider'?'<span class="spill sf">Prestador</span>':'<span class="spill sa">Consumidor</span>';
+        return`<tr><td><strong style="color:#fff">${p.name||'—'}</strong></td><td>${p.email||'—'}</td><td>${badge}</td><td>${p.city||'—'}</td><td>${date}</td></tr>`;
+      }).join('');
+    }
+    try{
+      const{data:logs}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(50);
+      const logTbody=document.getElementById('admin-audit-table');
+      if(logTbody&&logs?.length){
+        logTbody.innerHTML=logs.map(l=>{
+          const date=new Date(l.created_at).toLocaleString('es-CO');
+          const cls={account_created:'sa',nequi_changed:'sp',service_status_changed:'sf',account_suspended:'sr'}[l.event_type]||'sp';
+          return`<tr><td><span class="spill ${cls}">${l.event_type}</span></td><td>${l.description||'—'}</td><td>${date}</td></tr>`;
+        }).join('');
+      }
+    }catch(e){}
+  }catch(e){console.error(e);}
+}
+
+const PROVIDERS=[
+  {id:1,name:'Carlos Mendoza',cat:'Plomería',subcats:['Tuberías','Sanitarios','Duchas'],rating:4.9,reviews:127,desc:'Plomero con 12 años de experiencia. Diagnóstico gratis.',meta:'📍 1.2 km · ⏱ Disponible ahora · 💰 Desde $45.000',icon:'🔧',city:'Bogotá',featured:true,verified:true},
+  {id:2,name:'Ana Rodríguez',cat:'Electricidad',subcats:['Instalaciones','Tableros'],rating:4.8,reviews:89,desc:'Electricista certificada. Instalaciones residenciales.',meta:'📍 2.4 km · ⏱ Disponible ahora · 💰 Desde $50.000',icon:'⚡',city:'Bogotá',featured:false,verified:true,certified:true},
+  {id:3,name:'Luis Pedraza',cat:'Mecánica',subcats:['Diagnóstico','Frenos','Despinche'],rating:4.7,reviews:204,desc:'Mecánico a domicilio. Diagnóstico, frenos, baterías.',meta:'📍 3.1 km · ⏱ Disponible ahora · 💰 Desde $35.000',icon:'🚗',city:'Bogotá',featured:false,verified:true},
+  {id:4,name:'María Torres',cat:'Belleza',subcats:['Manicure','Pedicure'],rating:5.0,reviews:312,desc:'Especialista en uñas a domicilio.',meta:'📍 0.8 km · 💰 Fijo $60.000',icon:'💅',city:'Bogotá',featured:false,verified:true},
+  {id:5,name:'Rosa Jiménez',cat:'Aseo',subcats:['Aseo residencial'],rating:4.9,reviews:156,desc:'Aseo completo para hogares y oficinas.',meta:'📍 1.5 km · 💰 $25.000/hora',icon:'🧹',city:'Medellín',featured:false,verified:true},
+  {id:6,name:'Andrés Gómez',cat:'Tecnología',subcats:['Computadores','Redes wifi'],rating:4.8,reviews:78,desc:'Técnico en sistemas a domicilio.',meta:'📍 4.2 km · 💰 Desde $40.000',icon:'💻',city:'Bogotá',featured:false,verified:true},
+];
+
+const SUBCATS={
+  'Plomería':['Tuberías','Sanitarios','Duchas','Calentadores','Desagües'],
+  'Electricidad':['Instalaciones','Tableros','Luminarias','Tomas'],
+  'Mecánica':['Diagnóstico','Aceite','Frenos','Batería','Despinche'],
+  'Carpintería':['Muebles','Puertas','Pisos'],
+  'Aseo':['Aseo residencial','Oficinas','Desinfección'],
+  'Belleza':['Manicure','Pedicure','Peluquería','Barbería','Masajes'],
+  'Tecnología':['Computadores','Redes wifi','Celulares'],
+  'Mascotas':['Peluquería canina','Baño','Paseo'],
+  'Mudanzas':['Trasteos','Transporte'],
+  'Clases':['Matemáticas','Inglés','Música'],
+  'Cerrajería':['Apertura puertas','Cambio de chapa'],
+  'Pintura':['Residencial','Comercial']
+};
+
+let aC='',aSC='';
+
+function renderCards(data){
+  const g=document.getElementById('rgrid');g.innerHTML='';
+  if(!data.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray)">No se encontraron prestadores</div>';return;}
+  data.forEach(p=>{
+    const fb=p.featured?'<div class="ft-b">⭐ Destacado</div>':'';
+    const vb=p.verified?`<div class="pc-ver">✓ Verificado${p.certified?' · 🎓':''}</div>`:'';
+    g.innerHTML+=`<div class="pcard${p.featured?' pcard-ft':''}" onclick="goPage('perfil')">${fb}<div class="pc-img">${p.icon}</div><div class="pc-body"><div class="pc-top"><div class="pc-name">${p.name}</div><div class="pc-rating"><span class="s">★</span><span class="n">${p.rating}</span><span class="c">(${p.reviews})</span></div></div><div class="pc-cat">${p.icon} ${p.cat}</div>${vb}<div class="pc-desc">${p.desc}</div><div class="pc-meta">${p.meta}</div><div class="pc-ftr"><button class="btn-ver2" onclick="event.stopPropagation();goPage('perfil')">Ver perfil</button><button class="btn-sol2" onclick="event.stopPropagation();requireAuth('solicitar')">Solicitar</button></div></div></div>`;
+  });
+  document.getElementById('rc').innerHTML=`Mostrando <strong>${data.length} prestadores</strong>${aC?' · '+aC:''}`;
+}
+
+function applyF(){
+  const city=document.getElementById('cityF').value,rating=document.getElementById('ratingF').value;
+  let res=PROVIDERS.filter(p=>{
+    if(city&&p.city!==city)return false;
+    if(aC&&p.cat!==aC)return false;
+    if(aSC&&!p.subcats.some(s=>s.includes(aSC)))return false;
+    if(rating&&p.rating<parseFloat(rating))return false;
+    return true;
+  });
+  renderCards(res);
+}
+
+function onCatChange(){aC=document.getElementById('catF').value;aSC='';updateBar();renderSDD();applyF();}
+function renderSDD(){
+  const dd=document.getElementById('subcatDD');
+  if(!aC||!SUBCATS[aC]){dd.classList.remove('open');return;}
+  dd.innerHTML=SUBCATS[aC].map(s=>`<div class="sci${aSC===s?' sel':''}" onclick="selSC('${s}')">${s}</div>`).join('');
+  dd.classList.add('open');
+}
+function selSC(s){aSC=s;document.getElementById('subcatDD').classList.remove('open');updateBar();applyF();}
+function clearCat(){aC='';aSC='';document.getElementById('catF').value='';updateBar();applyF();}
+function clearSubcat(){aSC='';updateBar();applyF();}
+function updateBar(){
+  const bar=document.getElementById('atags'),ct=document.getElementById('catTag'),st=document.getElementById('subcatTag');
+  if(aC){bar.classList.add('show');document.getElementById('catTagN').textContent=aC;ct.style.display='inline-flex';}
+  else{bar.classList.remove('show');ct.style.display='none';}
+  if(aSC){st.style.display='inline-flex';document.getElementById('subcatTagN').textContent=aSC;}
+  else st.style.display='none';
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.fw'))document.getElementById('subcatDD').classList.remove('open');});
+function toggleMode(m){document.getElementById('btnU').className='mfb'+(m==='u'?' mu':'');document.getElementById('btnS').className='mfb'+(m==='s'?' ms':'');}
+function goCat(c){aC=c;aSC='';if(document.getElementById('catF'))document.getElementById('catF').value=c;updateBar();goPage('buscar');setTimeout(applyF,50);}
+function swTab(btn){btn.parentElement.querySelectorAll('.sw-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function sendMsg(){
+  const inp=document.getElementById('chatInput');if(!inp.value.trim())return;
+  const area=document.getElementById('chatArea');
+  const t=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+  area.innerHTML+=`<div class="cmsg mine"><div class="cbub">${inp.value}</div><div class="ct">${t}</div></div>`;
+  inp.value='';area.scrollTop=area.scrollHeight;
+}
+
+function goPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
+  if(p==='buscar'&&document.getElementById('rgrid').children.length===0)renderCards(PROVIDERS);
+  if(p==='home'){setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},100);}
+  if(p==='admin'&&currentUser)loadAdminData();
+}
+function setNL(el){document.querySelectorAll('.nl').forEach(x=>x.classList.remove('active'));el.classList.add('active');}
+function showAS(s,btn){
+  document.querySelectorAll('.asec').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.asb-item').forEach(x=>x.classList.remove('active'));
+  document.getElementById('as-'+s).classList.add('active');btn.classList.add('active');
+}
+function switchPT(btn,t){
+  document.querySelectorAll('.ph-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  ['info','rev','chat'].forEach(x=>{const el=document.getElementById('pt-'+x);if(el)el.style.display=x===t?'block':'none';});
+}
+function selMod(el){el.closest('.mod-opts').querySelectorAll('.mo').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');}
+function setStatus(s,btn){btn.parentElement.querySelectorAll('.st-btn').forEach(b=>{b.className='st-btn'+(b===btn&&s==='on'?' on':'');});toast(s==='on'?'🟢 Disponible':'🔴 No disponible');}
+function openM(id){document.getElementById(id).classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+let cpSelectedCat=null,cpSelectedSubcats=[];
+
+function previewImg(input,previewId,areaId,type){
+  const file=input.files[0];if(!file)return;
+  if(file.size>3*1024*1024){toast('⚠️ Máximo 3MB');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const prev=document.getElementById(previewId);
+    const area=document.getElementById(areaId);
+    const iconId='uai-'+(type==='circle'?'avatar':'cover');
+    const icon=document.getElementById(iconId);
+    prev.src=e.target.result;prev.style.display='block';
+    if(type==='circle')prev.style.margin='0 auto 8px';
+    if(icon)icon.style.display='none';
+    area.classList.add('has-image');
+    const title=area.querySelector('.upload-title');const sub=area.querySelector('.upload-sub');
+    if(title)title.textContent='✓ Imagen cargada';if(sub)sub.textContent='Toca para cambiar';
+  };
+  reader.readAsDataURL(file);
+}
+
+function selectCPCat(btn,cat){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');cpSelectedCat=cat;cpSelectedSubcats=[];
+  const wrap=document.getElementById('cp-subcat-wrap');
+  const chips=document.getElementById('cp-subcat-chips');
+  const subs=SUBCATS[cat]||[];
+  chips.innerHTML=subs.map(s=>`<div class="subcat-chip" onclick="toggleSubcat(this,'${s}')">${s}</div>`).join('');
+  wrap.style.display=subs.length?'block':'none';
+  const btn2=document.getElementById('cp-btn-2');
+  if(btn2){btn2.disabled=false;btn2.style.opacity='1';btn2.style.cursor='pointer';}
+}
+
+function toggleSubcat(chip,sub){
+  chip.classList.toggle('sel');
+  if(chip.classList.contains('sel')){if(!cpSelectedSubcats.includes(sub))cpSelectedSubcats.push(sub);}
+  else cpSelectedSubcats=cpSelectedSubcats.filter(s=>s!==sub);
+}
+
+function cpNext(step){
+  document.getElementById('cp-step-'+step).style.display='none';
+  document.getElementById('cp-step-'+(step+1)).style.display='block';
+  document.getElementById('cpd'+step).classList.remove('active');
+  document.getElementById('cpd'+step).classList.add('done');
+  document.getElementById('cpd'+(step+1)).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+async function uploadProviderPhoto(file,path){
+  if(!file)return null;
+  try{
+    const ext=file.name.split('.').pop();
+    const filename=`${path}_${Date.now()}.${ext}`;
+    const{error}=await sb.storage.from('provider-photos').upload(filename,file,{cacheControl:'3600',upsert:true});
+    if(error){console.error(error);return null;}
+    const{data:urlData}=sb.storage.from('provider-photos').getPublicUrl(filename);
+    return urlData?.publicUrl||null;
+  }catch(e){console.error(e);return null;}
+}
+
+async function saveProviderProfile(){
+  const terms=document.getElementById('cp-terms').checked;
+  const payment=document.getElementById('cp-payment').checked;
+  const deptId=document.getElementById('cp-dept').value;
+  const cityId=document.getElementById('cp-city').value;
+  const desc=document.getElementById('cp-desc').value.trim();
+  if(!cpSelectedCat){toast('⚠️ Selecciona tu categoría');return;}
+  if(!deptId||!cityId){toast('⚠️ Selecciona departamento y ciudad');return;}
+  if(!terms){toast('⚠️ Acepta los términos');return;}
+  if(!payment){toast('⚠️ Confirma el modelo de pagos');return;}
+  const btn=document.getElementById('cp-btn-3');
+  btn.textContent='Guardando...';btn.disabled=true;
+  try{
+    const avatarFile=document.getElementById('inp-avatar').files[0];
+    const coverFile=document.getElementById('inp-cover').files[0];
+    let avatarUrl=currentUser?.user_metadata?.avatar_url||null;
+    let coverUrl=null;
+    if(avatarFile)avatarUrl=await uploadProviderPhoto(avatarFile,`avatar_${currentUser.id}`);
+    if(coverFile)coverUrl=await uploadProviderPhoto(coverFile,`cover_${currentUser.id}`);
+    const{error}=await sb.from('profiles').update({
+      category:cpSelectedCat,subcategories:cpSelectedSubcats,description:desc||null,
+      department_id:parseInt(deptId),city_id:parseInt(cityId),country_id:1,
+      avatar_url:avatarUrl,cover_url:coverUrl,
+      terms_accepted:true,terms_accepted_at:new Date().toISOString(),
+      privacy_accepted:true,updated_at:new Date().toISOString()
+    }).eq('id',currentUser.id);
+    if(error){toast('❌ '+error.message);btn.textContent='🚀 Publicar mi perfil';btn.disabled=false;return;}
+    toast('✅ ¡Perfil publicado! Bienvenido a ServiYa 🎉');
+    setTimeout(()=>goPage('proveedor'),1200);
+  }catch(e){toast('❌ Error inesperado');btn.textContent='🚀 Publicar mi perfil';btn.disabled=false;}
+}
+
+function startAdminClock(){
+  const el=document.getElementById('adminClock');
+  if(el){const u=()=>{el.textContent=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit',second:'2-digit'});};u();setInterval(u,1000);}
+}
+startAdminClock();
+
+function toast(msg){const t=document.getElementById('toastEl');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+
+const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},200);
+
+renderCards(PROVIDERS);
+</script>
+</body>
+</html>
