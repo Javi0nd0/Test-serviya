@@ -1220,6 +1220,7 @@ function sendMsg(){
 }
 
 function goPage(p){
+  if(p==='auth'&&currentUser){goToPortal();return;}
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
   window.scrollTo(0,0);
