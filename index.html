@@ -920,8 +920,8 @@ footer{background:var(--slate);padding:52px 64px 32px;}
         <div class="asec-title">Todos los usuarios</div>
         <div class="asec-sub">Datos reales desde Supabase</div>
         <table class="dt">
-          <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Ciudad</th><th>Registro</th></tr></thead>
-          <tbody id="admin-all-users"><tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,.25);padding:20px;">Cargando...</td></tr></tbody>
+<thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Ciudad</th><th>Registro</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody id="admin-all-users"><tr><td colspan="7" style="text-align:center;color:rgba(255,255,255,.25);padding:20px;">Cargando...</td></tr></tbody>
         </table>
       </div>
       <div class="asec" id="as-prestadores">
@@ -1104,12 +1104,15 @@ async function loadAdminData(){
         return`<tr><td><strong style="color:#fff">${p.name||'—'}</strong></td><td>${p.email||'—'}</td><td>${badge}</td><td>${date}</td><td>Supabase</td></tr>`;
       }).join('');}
     }
-    const allTbody=document.getElementById('admin-all-users');
+const allTbody=document.getElementById('admin-all-users');
     if(allTbody&&profiles?.length){
       allTbody.innerHTML=profiles.map(p=>{
         const date=p.created_at?new Date(p.created_at).toLocaleDateString('es-CO'):'—';
-        const badge=p.role==='provider'?'<span class="spill sf">Prestador</span>':'<span class="spill sa">Consumidor</span>';
-        return`<tr><td><strong style="color:#fff">${p.name||'—'}</strong></td><td>${p.email||'—'}</td><td>${badge}</td><td>${p.city||'—'}</td><td>${date}</td></tr>`;
+        const badge=p.role==='provider'?'<span class="spill sf">Prestador</span>':p.role==='admin'?'<span class="spill sr">Admin</span>':'<span class="spill sa">Consumidor</span>';
+        const isSuspended=p.status==='suspended';
+        const statusBadge=isSuspended?'<span class="spill sr">Suspendido</span>':'<span class="spill sa">Activo</span>';
+        const actionBtn=p.role==='admin'?'—':`<button class="tbtn ${isSuspended?'tba':'tbr'}" onclick="toggleUserStatus('${p.id}','${isSuspended?'active':'suspended'}')">${isSuspended?'Reactivar':'Suspender'}</button>`;
+        return`<tr><td><strong style="color:#fff">${p.name||'—'}</strong></td><td>${p.email||'—'}</td><td>${badge}</td><td>${p.city||'—'}</td><td>${date}</td><td>${statusBadge}</td><td>${actionBtn}</td></tr>`;
       }).join('');
     }
     try{
@@ -1124,6 +1127,18 @@ async function loadAdminData(){
       }
     }catch(e){}
   }catch(e){console.error(e);}
+}
+
+async function toggleUserStatus(userId,newStatus){
+  const label=newStatus==='suspended'?'suspender':'reactivar';
+  if(!confirm(`¿Seguro que quieres ${label} este usuario?`))return;
+  try{
+    const{error}=await sb.from('profiles').update({status:newStatus}).eq('id',userId);
+    if(error){toast('❌ '+error.message);return;}
+    await sb.from('audit_log').insert({event_type:newStatus==='suspended'?'account_suspended':'account_reactivated',description:`Usuario ${userId} ${newStatus==='suspended'?'suspendido':'reactivado'} por admin`});
+    toast(newStatus==='suspended'?'🔴 Usuario suspendido':'🟢 Usuario reactivado');
+    loadAdminData();
+  }catch(e){toast('❌ Error inesperado');}
 }
 
 const PROVIDERS=[
