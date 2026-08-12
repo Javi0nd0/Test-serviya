@@ -1220,10 +1220,10 @@ function sendMsg(){
 }
 
 function goPage(p){
-  if(p==='auth'&&currentUser){goToPortal();return;}
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
   window.scrollTo(0,0);
+  if(p==='auth'&&currentUser){goToPortal();return;}
+  document.getElementById('page-'+p).classList.add('active');
   if(p==='buscar'&&document.getElementById('rgrid').children.length===0)renderCards(PROVIDERS);
   if(p==='home'){setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},100);}
   if(p==='admin'&&currentUser)loadAdminData();
