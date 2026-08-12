@@ -989,7 +989,7 @@ async function ensureProfile(user){
   try{
     const{data}=await sb.from('profiles').select('id,role,name,category,city_id').eq('id',user.id).single();
     if(!data){
-      const role=localStorage.getItem('serviya_pending_role')||'consumer';
+      const role=(user.email===ADMIN_EMAIL)?'admin':(localStorage.getItem('serviya_pending_role')||'consumer');
       localStorage.removeItem('serviya_pending_role');
       await sb.from('profiles').insert({id:user.id,email:user.email,name:user.user_metadata?.full_name||user.email.split('@')[0],avatar_url:user.user_metadata?.avatar_url||null,role,country_id:1});
       currentUserRole=role;
