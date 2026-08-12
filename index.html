@@ -1053,6 +1053,8 @@ async function goToPortal(){
       if(['admin','moderator','support'].includes(data.role)){goPage('admin');loadAdminData();}
       else if(data.role==='provider'){goPage('proveedor');if(data.name&&document.getElementById('provName'))document.getElementById('provName').textContent=data.name;}
       else goPage('buscar');
+    }else{
+      if(currentUser.email===ADMIN_EMAIL){goPage('admin');loadAdminData();}else goPage('buscar');
     }
   }catch(e){if(currentUser.email===ADMIN_EMAIL){goPage('admin');loadAdminData();}else goPage('buscar');}
 }
