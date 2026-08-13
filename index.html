@@ -1035,6 +1035,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.nav-ava'))document.
 let selectedAuthRole=null,authMode='register';
 
 function openAuth(mode){
+  if(currentUser){goToPortal();return;}
   authMode=mode;
   const t=document.getElementById('authTitle'),s=document.getElementById('authSub'),g=document.getElementById('authRoleGrid');
   const btns=['btnGoogleAuth','btnMagicLink'].map(id=>document.getElementById(id));
