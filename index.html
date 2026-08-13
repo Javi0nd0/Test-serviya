@@ -460,7 +460,7 @@ footer{background:var(--slate);padding:52px 64px 32px;}
   </div>
   <div class="nav-right" id="navRight">
     <button class="btn-login" onclick="openAuth('login')">Iniciar sesión</button>
-<button class="btn-cta-nav" onclick="openAuth('register')">Registrarse gratis</button>
+    <button class="btn-cta-nav" onclick="openAuth('register')">Registrarse gratis</button>
   </div>
   <div class="nav-ava" id="navAva" onclick="toggleAvaMenu()">
     <span id="navAvaText">?</span>
@@ -706,7 +706,7 @@ footer{background:var(--slate);padding:52px 64px 32px;}
       </div>
       <div class="auth-r" style="display:flex;flex-direction:column;justify-content:center;">
         <div id="auth-role-select">
-  <div style="text-align:center;margin-bottom:24px;">
+          <div style="text-align:center;margin-bottom:24px;">
             <div id="authTitle" style="font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:800;color:var(--slate);margin-bottom:4px;">¿Cómo quieres entrar?</div>
             <div id="authSub" style="font-size:.78rem;color:var(--gray);">Elige tu rol para continuar</div>
           </div>
@@ -931,8 +931,8 @@ footer{background:var(--slate);padding:52px 64px 32px;}
         <div class="asec-title">Todos los usuarios</div>
         <div class="asec-sub">Datos reales desde Supabase</div>
         <table class="dt">
-<thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Ciudad</th><th>Registro</th><th>Estado</th><th>Acciones</th></tr></thead>
-          <tbody id="admin-all-users"><tr><td colspan="7" style="text-align:center;color:rgba(255,255,255,.25);padding:20px;">Cargando...</td></tr></tbody>
+          <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Ciudad</th><th>Registro</th></tr></thead>
+          <tbody id="admin-all-users"><tr><td colspan="5" style="text-align:center;color:rgba(255,255,255,.25);padding:20px;">Cargando...</td></tr></tbody>
         </table>
       </div>
       <div class="asec" id="as-prestadores">
@@ -1000,7 +1000,7 @@ async function ensureProfile(user){
   try{
     const{data}=await sb.from('profiles').select('id,role,name,category,city_id').eq('id',user.id).single();
     if(!data){
-      const role=(user.email===ADMIN_EMAIL)?'admin':(localStorage.getItem('serviya_pending_role')||'consumer');
+      const role=localStorage.getItem('serviya_pending_role')||'consumer';
       localStorage.removeItem('serviya_pending_role');
       await sb.from('profiles').insert({id:user.id,email:user.email,name:user.user_metadata?.full_name||user.email.split('@')[0],avatar_url:user.user_metadata?.avatar_url||null,role,country_id:1});
       currentUserRole=role;
@@ -1032,7 +1032,50 @@ function updateNavForGuest(){
 function toggleAvaMenu(){document.getElementById('avaMenu').classList.toggle('open');}
 document.addEventListener('click',e=>{if(!e.target.closest('.nav-ava'))document.getElementById('avaMenu').classList.remove('open');});
 
-let selectedAuthRole=null;
+let selectedAuthRole=null,authMode='register';
+
+function openAuth(mode){
+  authMode=mode;
+  const t=document.getElementById('authTitle'),s=document.getElementById('authSub'),g=document.getElementById('authRoleGrid');
+  const btns=['btnGoogleAuth','btnMagicLink'].map(id=>document.getElementById(id));
+  if(mode==='login'){
+    t.textContent='Bienvenido de nuevo';
+    s.textContent='Continúa para entrar a tu cuenta';
+    g.style.display='none';
+    btns.forEach(b=>{b.disabled=false;b.style.opacity='1';b.style.cursor='pointer';});
+  }else{
+    t.textContent='¿Cómo quieres entrar?';
+    s.textContent='Elige tu rol para continuar';
+    g.style.display='grid';
+    selectedAuthRole=null;
+    document.getElementById('authRoleC').classList.remove('sel');
+    document.getElementById('authRoleP').classList.remove('sel');
+    btns.forEach(b=>{b.disabled=true;b.style.opacity='.5';b.style.cursor='not-allowed';});
+  }
+  goPage('auth');
+}
+
+function selectAuthRole(role){
+  selectedAuthRole=role;
+  document.getElementById('authRoleC').classList.toggle('sel',role==='consumer');
+  document.getElementById('authRoleP').classList.toggle('sel',role==='provider');
+  ['btnGoogleAuth','btnMagicLink'].forEach(id=>{
+    const b=document.getElementById(id);
+    b.disabled=false;b.style.opacity='1';b.style.cursor='pointer';
+  });
+}
+
+async function loginWithGoogle(){
+  if(authMode==='register'){
+    if(!selectedAuthRole){toast('⚠️ Selecciona si eres cliente o prestador');return;}
+    localStorage.setItem('serviya_pending_role',selectedAuthRole);
+  }else{
+    localStorage.removeItem('serviya_pending_role');
+  }
+  const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
+  if(error)toast('❌ '+error.message);
+}
+
 async function loginWithMagicLink(){
   const email=document.getElementById('magicEmail').value.trim();
   if(!email||!email.includes('@')){toast('⚠️ Ingresa un correo válido');return;}
@@ -1045,17 +1088,6 @@ async function loginWithMagicLink(){
   const{error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:window.location.href}});
   if(error){toast('❌ '+error.message);return;}
   toast('✉️ Revisa tu correo, te enviamos un enlace de acceso');
-}
-
-async function loginWithGoogle(){
-  if(authMode==='register'){
-    if(!selectedAuthRole){toast('⚠️ Selecciona si eres cliente o prestador');return;}
-    localStorage.setItem('serviya_pending_role',selectedAuthRole);
-  }else{
-    localStorage.removeItem('serviya_pending_role');
-  }
-  const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
-  if(error)toast('❌ '+error.message);
 }
 
 async function doLogout(){await sb.auth.signOut();toast('👋 Sesión cerrada');goPage('home');}
@@ -1074,8 +1106,6 @@ async function goToPortal(){
       if(['admin','moderator','support'].includes(data.role)){goPage('admin');loadAdminData();}
       else if(data.role==='provider'){goPage('proveedor');if(data.name&&document.getElementById('provName'))document.getElementById('provName').textContent=data.name;}
       else goPage('buscar');
-    }else{
-      if(currentUser.email===ADMIN_EMAIL){goPage('admin');loadAdminData();}else goPage('buscar');
     }
   }catch(e){if(currentUser.email===ADMIN_EMAIL){goPage('admin');loadAdminData();}else goPage('buscar');}
 }
@@ -1127,15 +1157,12 @@ async function loadAdminData(){
         return`<tr><td><strong style="color:#fff">${p.name||'—'}</strong></td><td>${p.email||'—'}</td><td>${badge}</td><td>${date}</td><td>Supabase</td></tr>`;
       }).join('');}
     }
-const allTbody=document.getElementById('admin-all-users');
+    const allTbody=document.getElementById('admin-all-users');
     if(allTbody&&profiles?.length){
       allTbody.innerHTML=profiles.map(p=>{
         const date=p.created_at?new Date(p.created_at).toLocaleDateString('es-CO'):'—';
-        const badge=p.role==='provider'?'<span class="spill sf">Prestador</span>':p.role==='admin'?'<span class="spill sr">Admin</span>':'<span class="spill sa">Consumidor</span>';
-        const isSuspended=p.status==='suspended';
-        const statusBadge=isSuspended?'<span class="spill sr">Suspendido</span>':'<span class="spill sa">Activo</span>';
-        const actionBtn=p.role==='admin'?'—':`<button class="tbtn ${isSuspended?'tba':'tbr'}" onclick="toggleUserStatus('${p.id}','${isSuspended?'active':'suspended'}')">${isSuspended?'Reactivar':'Suspender'}</button>`;
-        return`<tr><td><strong style="color:#fff">${p.name||'—'}</strong></td><td>${p.email||'—'}</td><td>${badge}</td><td>${p.city||'—'}</td><td>${date}</td><td>${statusBadge}</td><td>${actionBtn}</td></tr>`;
+        const badge=p.role==='provider'?'<span class="spill sf">Prestador</span>':'<span class="spill sa">Consumidor</span>';
+        return`<tr><td><strong style="color:#fff">${p.name||'—'}</strong></td><td>${p.email||'—'}</td><td>${badge}</td><td>${p.city||'—'}</td><td>${date}</td></tr>`;
       }).join('');
     }
     try{
@@ -1150,18 +1177,6 @@ const allTbody=document.getElementById('admin-all-users');
       }
     }catch(e){}
   }catch(e){console.error(e);}
-}
-
-async function toggleUserStatus(userId,newStatus){
-  const label=newStatus==='suspended'?'suspender':'reactivar';
-  if(!confirm(`¿Seguro que quieres ${label} este usuario?`))return;
-  try{
-    const{error}=await sb.from('profiles').update({status:newStatus}).eq('id',userId);
-    if(error){toast('❌ '+error.message);return;}
-    await sb.from('audit_log').insert({event_type:newStatus==='suspended'?'account_suspended':'account_reactivated',description:`Usuario ${userId} ${newStatus==='suspended'?'suspendido':'reactivado'} por admin`});
-    toast(newStatus==='suspended'?'🔴 Usuario suspendido':'🟢 Usuario reactivado');
-    loadAdminData();
-  }catch(e){toast('❌ Error inesperado');}
 }
 
 const PROVIDERS=[
@@ -1244,9 +1259,8 @@ function sendMsg(){
 
 function goPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  window.scrollTo(0,0);
-  if(p==='auth'&&currentUser){goToPortal();return;}
   document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
   if(p==='buscar'&&document.getElementById('rgrid').children.length===0)renderCards(PROVIDERS);
   if(p==='home'){setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},100);}
   if(p==='admin'&&currentUser)loadAdminData();
@@ -1371,7 +1385,7 @@ const ro=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecti
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 setTimeout(()=>{document.getElementById('heroL').classList.add('in');document.getElementById('heroR').classList.add('in');},200);
 
-  sb.auth.getSession().then(({data:{session}})=>{
+sb.auth.getSession().then(({data:{session}})=>{
   if(session?.user){
     currentUser=session.user;
     updateNavForUser(session.user);
